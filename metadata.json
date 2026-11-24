@@ -1,0 +1,8 @@
+{
+  "name": "BMMB1084: Studio Sintaksis Melayu",
+  "description": "Bengkel persediaan Peperiksaan Akhir kursus BMMB1084 (Asas Tatabahasa Bahasa Melayu) IPG berfokuskan HPK 2 Aras C5 dan Tatabahasa Dewan Edisi Ketiga.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

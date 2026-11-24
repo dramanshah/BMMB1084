@@ -1,0 +1,2143 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Simulasi Peperiksaan BMMB1084 | Asas Sintaksis (IPGM)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                    },
+                    colors: {
+                        ipg: {
+                            navy: '#0f2557',
+                            dark: '#091738',
+                            blue: '#1e3a8a',
+                            gold: '#d4af37',
+                            goldlight: '#f3e5ab',
+                            golddark: '#b59020',
+                            slate: '#f8fafc'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar & print styles */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        .fade-in { animation: fadeIn 0.25s ease-in-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; }
+            .print-break { page-break-before: always; }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Top Academic Header -->
+    <header class="bg-gradient-to-r from-ipg-dark via-ipg-navy to-ipg-blue text-white shadow-lg border-b-4 border-ipg-gold sticky top-0 z-30 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                <div class="flex items-center gap-3.5">
+                    <!-- Academic Emblem SVG -->
+                    <div class="w-12 h-12 rounded-xl bg-white/10 border border-ipg-gold/50 flex items-center justify-center shrink-0 shadow-inner">
+                        <svg class="w-7 h-7 text-ipg-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="px-2 py-0.5 text-[11px] font-bold tracking-wider uppercase bg-ipg-gold text-ipg-dark rounded-md">IPGM • PPISMP</span>
+                            <span class="text-xs text-blue-200 font-medium">Rujukan: <em>Tatabahasa Dewan Edisi Keempat</em></span>
+                        </div>
+                        <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white mt-0.5">
+                            BMMB1084: Asas Tatabahasa Bahasa Melayu <span class="text-ipg-gold font-semibold">(Asas Sintaksis)</span>
+                        </h1>
+                        <p class="text-[11px] sm:text-xs text-blue-100 mt-1">
+                            Modul Simulasi ini disediakan oleh: <strong class="text-ipg-goldlight font-semibold">Dr. Aman Shah bin Syed Ali</strong> • Jabatan Pengajian Bahasa, IPG Kampus Tawau
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Header Utility Controls -->
+                <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+                    <!-- Exam Timer Toggle -->
+                    <div id="timerWidget" class="flex items-center gap-2 bg-white/10 border border-white/20 rounded-xl px-3 py-1.5 text-sm">
+                        <svg class="w-4 h-4 text-ipg-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span id="timerDisplay" class="font-mono font-bold tracking-wider text-white">02:00:00</span>
+                        <button onclick="toggleTimer()" id="timerBtn" class="ml-1 px-2 py-0.5 text-xs font-semibold rounded-lg bg-ipg-gold text-ipg-dark hover:bg-yellow-400 transition">
+                            Mula
+                        </button>
+                        <button onclick="resetTimer()" title="Set Semula Masa" class="p-1 text-blue-200 hover:text-white transition">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module Navigation Bar (Susunan: Nota Padat -> Objektif -> Simulasi) -->
+            <nav class="mt-3.5 pt-2.5 border-t border-white/15 flex items-center gap-2 overflow-x-auto pb-1" aria-label="Pilihan Modul">
+                <button onclick="switchTab('nota')" id="tab-nota" class="nav-tab shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2">
+                    <svg class="w-4 h-4 text-sky-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                    </svg>
+                    Nota Padat Sintaksis
+                </button>
+                <div class="h-5 w-px bg-white/20 mx-1 shrink-0"></div>
+                <button onclick="switchTab('mcq1')" id="tab-mcq1" class="nav-tab shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2">
+                    <svg class="w-4 h-4 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Objektif 1: Asas (25 Soalan)
+                </button>
+                <button onclick="switchTab('mcq2')" id="tab-mcq2" class="nav-tab shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2">
+                    <svg class="w-4 h-4 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                    Objektif 2: Mencabar KBAT (25 Soalan)
+                </button>
+                <div class="h-5 w-px bg-white/20 mx-1 shrink-0"></div>
+                <button onclick="switchTab('modul1')" id="tab-modul1" class="nav-tab shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-ipg-gold"></span>
+                    Modul Simulasi 1
+                </button>
+                <button onclick="switchTab('modul2')" id="tab-modul2" class="nav-tab shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-ipg-gold"></span>
+                    Modul Simulasi 2
+                </button>
+                <button onclick="switchTab('modul3')" id="tab-modul3" class="nav-tab shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-ipg-gold"></span>
+                    Modul Simulasi 3
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-5">
+        <!-- Toast Notification Box (Replaces alert) -->
+        <div id="toastBanner" class="hidden fixed bottom-5 right-5 z-50 max-w-sm bg-ipg-navy text-white px-4 py-3 rounded-xl shadow-2xl border-l-4 border-ipg-gold flex items-center gap-3 fade-in">
+            <svg class="w-5 h-5 text-ipg-gold shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <p id="toastMessage" class="text-xs sm:text-sm font-medium"></p>
+        </div>
+
+        <!-- Panduan Penggunaan Portal & Modul Simulasi (Collapsible Guide Banner) -->
+        <section class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden no-print">
+            <div class="bg-gradient-to-r from-slate-50 to-blue-50/60 px-5 py-3.5 flex flex-wrap items-center justify-between gap-3 border-b border-slate-200/80">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-7 h-7 rounded-lg bg-ipg-navy text-ipg-gold flex items-center justify-center font-extrabold text-xs shadow-sm">?</span>
+                    <div>
+                        <h2 class="text-xs sm:text-sm font-extrabold text-ipg-navy">Panduan Penggunaan Portal Ulang Kaji &amp; Modul Simulasi BMMB1084</h2>
+                        <p class="text-[11px] text-slate-600">Ikuti aliran pembelajaran 3 fasa di bawah untuk persediaan optimum peperiksaan akhir.</p>
+                    </div>
+                </div>
+                <button onclick="toggleGuidePanel()" id="guideToggleBtn" class="px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-xs font-bold text-ipg-navy transition">
+                    Sembunyikan Panduan
+                </button>
+            </div>
+            <div id="guidePanelBody" class="p-5 grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                <div class="bg-sky-50/60 border border-sky-200 rounded-xl p-4 space-y-1.5">
+                    <div class="flex items-center gap-2 font-extrabold text-ipg-navy">
+                        <span class="px-2 py-0.5 rounded bg-sky-600 text-white text-[10px]">FASA 1</span>
+                        <span>Ulang Kaji Nota Padat Sintaksis</span>
+                    </div>
+                    <p class="text-slate-700 leading-relaxed">Mulakan dengan membaca rumusan 8 tajuk teras <em>Tatabahasa Dewan Edisi Keempat</em>. Gunakan kotak <strong>Carian Pantas</strong> untuk menyemak rumus Hukum D-M, pola ayat dasar, songsang, dan jadual pasif KGND 1/2/3.</p>
+                </div>
+                <div class="bg-emerald-50/60 border border-emerald-200 rounded-xl p-4 space-y-1.5">
+                    <div class="flex items-center gap-2 font-extrabold text-ipg-navy">
+                        <span class="px-2 py-0.5 rounded bg-emerald-600 text-white text-[10px]">FASA 2</span>
+                        <span>Latih Tubi Objektif (Asas &amp; KBAT)</span>
+                    </div>
+                    <p class="text-slate-700 leading-relaxed">Uji kefahaman konsep melalui <strong>Objektif 1 (25 soalan teras)</strong> dan <strong>Objektif 2 (25 soalan aras mencabar KBAT)</strong>. Klik <em>Semak Semua Jawapan Objektif</em> di bahagian bawah untuk melihat markah dan ulasan jawapan.</p>
+                </div>
+                <div class="bg-amber-50/70 border border-amber-200 rounded-xl p-4 space-y-1.5">
+                    <div class="flex items-center gap-2 font-extrabold text-ipg-navy">
+                        <span class="px-2 py-0.5 rounded bg-amber-600 text-white text-[10px]">FASA 3</span>
+                        <span>Simulasi Peperiksaan (70 Markah)</span>
+                    </div>
+                    <ul class="text-slate-700 space-y-1 list-disc pl-4 leading-relaxed">
+                        <li>Tekan <strong>Mula</strong> pada pemasa <strong>02:00:00</strong> di penjuru atas kanan untuk suasana peperiksaan sebenar.</li>
+                        <li>Jawab <strong>semua</strong> soalan Bahagian A (30m) dan klik butang <strong>✓ Dipilih</strong> pada <strong>2 soalan</strong> Bahagian B (40m).</li>
+                        <li>Taip jawapan penuh &amp; tekan <strong>Semak &amp; Nilai Jawapan</strong> untuk analisis persamaan (<em>Smart Similarity</em>), skema rasmi, dan anggaran markah rubrik IPGM.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Content Container -->
+        <div id="appContainer" class="fade-in"></div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-5 mt-10 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-xs text-slate-600">
+            <div class="space-y-0.5">
+                <p><strong>BMMB1084 Asas Tatabahasa Bahasa Melayu</strong> • Persediaan Peperiksaan Akhir (HPK 2 — Aras C5)</p>
+                <p class="text-slate-500">Berpandukan <em>Tatabahasa Dewan Edisi Keempat</em> (Nik Safiah Karim et al.)</p>
+            </div>
+            <div class="md:text-right text-slate-700 leading-snug">
+                <p class="font-semibold text-ipg-navy">Modul Simulasi ini disediakan oleh:</p>
+                <p class="font-bold">Dr. Aman Shah bin Syed Ali</p>
+                <p class="text-slate-500">Jabatan Pengajian Bahasa • IPG Kampus Tawau</p>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // =========================================================================
+        // 1. PANGKALAN DATA 3 MODUL SIMULASI PEPERIKSAAN AKHIR BMMB1084 (70 MARKAH)
+        // =========================================================================
+        const EXAM_MODULES = {
+            modul1: {
+                id: 'modul1',
+                title: 'MODUL SIMULASI 1: KERTAS PEPERIKSAAN BMMB1084',
+                code: 'BMMB1084',
+                course: 'ASAS TATABAHASA BAHASA MELAYU',
+                time: '2 JAM',
+                totalMarks: 70,
+                bahagianA: [
+                    {
+                        id: 'm1_a1',
+                        num: 'Soalan 1',
+                        totalMarks: 15,
+                        stimulus: '“Mini telekung sutera putih itu dihadiahkan oleh ibu kepada nenek sempena hari lahirnya. Walaupun kos pembeliannya agak mahal, ibu tetap membelinya kerana mahu menggembirakan hati nenek.”',
+                        subQuestions: [
+                            {
+                                id: 'm1_a1a',
+                                label: '(a)',
+                                marks: 5,
+                                prompt: 'Nilaikan kepatuhan binaan Frasa Nama (FN) yang terdapat dalam ayat di atas berdasarkan rumus Hukum D-M dan kekecualian Hukum D-M mengikut <em>Tatabahasa Dewan Edisi Keempat</em>.',
+                                keywords: ['diterangkan', 'menerangkan', 'mini telekung', 'kekecualian', 'inti', 'mematuhi'],
+                                scheme: `
+                                    <p><strong>1. Konsep Hukum D-M:</strong> Menurut <em>Tatabahasa Dewan Edisi Keempat</em>, Hukum D-M menetapkan bahawa unsur yang <strong>Diterangkan (D)</strong> (inti kata nama) mendahului unsur yang <strong>Menerangkan (M)</strong> (penerang), kecuali bagi nama jawatan, gelaran, atau panggilan tertentu.</p>
+                                    <ul class="list-disc pl-5 space-y-1 mt-2">
+                                        <li><strong>"Mini telekung":</strong> <strong>Kekecualian Hukum D-M</strong> — Unsur penerang (<em>Mini</em> - M) mendahului kata nama inti (<em>telekung</em> - D) atas faktor kebiasaan penggunaan.</li>
+                                        <li><strong>"telekung sutera putih":</strong> <strong>Mematuhi Hukum D-M</strong> — <em>telekung</em> (D - Inti) + <em>sutera</em> (M1 - Penerang bahan) + <em>putih</em> (M2 - Penerang warna).</li>
+                                        <li><strong>"hari lahir", "kos pembelian", "hati nenek":</strong> <strong>Mematuhi Hukum D-M</strong> — Kesemuanya meletakkan kata nama inti (D) di hadapan unsur penerang (M).</li>
+                                    </ul>
+                                    <p class="mt-2"><strong>Kesimpulan Penilaian:</strong> Kebanyakan binaan FN dalam petikan mematuhi Hukum D-M secara tepat, manakala frasa <em>mini telekung</em> tertakluk di bawah rumus kekecualian Hukum D-M.</p>
+                                `
+                            },
+                            {
+                                id: 'm1_a1b',
+                                label: '(b)',
+                                marks: 10,
+                                prompt: 'Huraikan fungsi klausa bebas dan klausa tak bebas dalam ayat kedua petikan di atas untuk membentuk kesinambungan wacana yang gramatis.',
+                                keywords: ['klausa bebas', 'ibu tetap membelinya', 'pertentangan', 'musabab', 'kohesi', 'koheren'],
+                                scheme: `
+                                    <p><strong>1. Konsep Klausa:</strong> Klausa bebas mempunyai subjek dan predikat serta boleh berdiri sendiri sebagai ayat lengkap; klausa tak bebas tidak boleh berdiri sendiri dan bergantung pada klausa bebas.</p>
+                                    <ul class="list-disc pl-5 space-y-1 mt-2">
+                                        <li><strong>Klausa Bebas (Klausa Utama):</strong> <em>"ibu tetap membelinya"</em> — Bertindak sebagai teras utama wacana yang menyampaikan tindakan mutlak subjek (<em>ibu</em>).</li>
+                                        <li><strong>Klausa Tak Bebas 1 (Pancangan Keterangan Pertentangan):</strong> <em>"Walaupun kos pembeliannya agak mahal"</em> — Menyatakan situasi halangan atau kekangan kewangan yang bertentangan dengan tindakan utama.</li>
+                                        <li><strong>Klausa Tak Bebas 2 (Pancangan Keterangan Musabab):</strong> <em>"...kerana mahu menggembirakan hati nenek"</em> — Menjelaskan motif atau punca utama tindakan dalam klausa bebas.</li>
+                                    </ul>
+                                    <p class="mt-2"><strong>2. Kesinambungan Wacana:</strong> Kata hubung pancangan (<em>walaupun</em> dan <em>kerana</em>) mewujudkan tautan sintaksis (<strong>kohesi</strong>) serta pertautan idea sebab-akibat dan pertentangan yang logik (<strong>koheren</strong>).</p>
+                                `
+                            }
+                        ]
+                    },
+                    {
+                        id: 'm1_a2',
+                        num: 'Soalan 2',
+                        totalMarks: 15,
+                        stimulus: '“Sungguh nyaman udara di kawasan tanah tinggi Cameron Highlands. Bilakah kali terakhir anda meluangkan masa bercuti bersama-sama keluarga tersayang? Aduhai, ruginya jika keindahan alam semula jadi ini dibiarkan tercemar begitu sahaja! Oleh sebab itu, jagalah kebersihan persekitaran apabila berkunjung ke destinasi pelancongan.”',
+                        subQuestions: [
+                            {
+                                id: 'm1_a2a',
+                                label: '(a)',
+                                marks: 5,
+                                prompt: 'Buktikan ayat dasar yang terdapat dalam petikan di atas mengikut <em>Tatabahasa Dewan Edisi Keempat</em>.',
+                                keywords: ['susunan biasa', 'fn + fa', 'subjek', 'predikat', 'sungguh nyaman'],
+                                scheme: `
+                                    <p><strong>1. Kriteria Ayat Dasar:</strong> Ayat tunggal yang berada dalam susunan biasa (Subjek + Predikat), berjenis ayat penyata, dan beragaman aktif.</p>
+                                    <p class="mt-1"><strong>2. Pembuktian Petikan:</strong> Ayat 1 (<em>"Sungguh nyaman udara di kawasan tanah tinggi Cameron Highlands."</em>) merupakan ayat tunggal penyata aktif dalam <strong>susunan songsang</strong>.</p>
+                                    <ul class="list-disc pl-5 space-y-1 mt-1">
+                                        <li><strong>Subjek (FN):</strong> <em>Udara di kawasan tanah tinggi Cameron Highlands</em></li>
+                                        <li><strong>Predikat (FA):</strong> <em>sungguh nyaman</em></li>
+                                    </ul>
+                                    <p class="mt-2"><strong>Kesimpulan:</strong> Binaan di atas membuktikan kewujudan <strong>Ayat Dasar</strong> berpola <strong>FN + FA</strong>.</p>
+                                `
+                            },
+                            {
+                                id: 'm1_a2b',
+                                label: '(b)',
+                                marks: 10,
+                                prompt: 'Interpretasikan gabungan pelbagai jenis ayat dalam petikan di atas dari sudut dinamika retorik dan emosi pembaca berbanding sekiranya keseluruhan petikan ditulis menggunakan ayat penyata sahaja.',
+                                keywords: ['penyata', 'tanya', 'seruan', 'perintah', 'retorik', 'mendatar'],
+                                scheme: `
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        <li><strong>Ayat Penyata (<em>"Sungguh nyaman udara..."</em>):</strong> Menyampaikan fakta deskriptif keindahan alam sebagai pembuka wacana.</li>
+                                        <li><strong>Ayat Tanya (<em>"Bilakah kali terakhir anda..."</em>):</strong> Persoalan retorik yang mendorong pembaca bermuhasabah tentang kekerapan meluangkan masa bersama keluarga.</li>
+                                        <li><strong>Ayat Seruan (<em>"Aduhai, ruginya jika..."</em>):</strong> Meluahkan nada emosi kesal dan bimbang terhadap risiko pencemaran alam.</li>
+                                        <li><strong>Ayat Perintah Suruhan (<em>"Oleh sebab itu, jagalah..."</em>):</strong> Mengemukakan gesaan tindakan konkrit kepada pembaca.</li>
+                                    </ul>
+                                    <p class="mt-2"><strong>Dinamika Retorik:</strong> Gabungan keempat-empat jenis ayat menghasilkan gelombang persuasif bertingkat (fakta &rarr; muhasabah &rarr; emosi &rarr; tindakan), manakala penggunaan ayat penyata sahaja menjadikan wacana mendatar (<em>monotonous</em>) dan kurang daya pemujukan.</p>
+                                `
+                            }
+                        ]
+                    }
+                ],
+                bahagianB: [
+                    {
+                        id: 'm1_b1',
+                        num: 'Soalan 1',
+                        marks: 20,
+                        stimulus: `<ol class="list-[lower-roman] pl-6 space-y-1 not-italic font-medium text-slate-800">
+                            <li>Di dewan seminar utama para peserta kursus sedang mendengar taklimat.</li>
+                            <li>Sungguh lazat sekali juadah tradisional yang dihidangkan oleh tuan rumah itu.</li>
+                            <li>Membaca novel sejarah itu belum habis adik saya.</li>
+                        </ol>`,
+                        prompt: 'Berdasarkan ketiga-tiga ayat di atas, perincikan kegramatisan pembentukan ayat susunan songsang tersebut berpandukan hukum pendepanan predikat dalam <em>Tatabahasa Dewan Edisi Keempat</em>.',
+                        keywords: ['tidak gramatis', 'gramatis', 'pendepanan', 'frasa kerja', 'frasa adjektif', 'pembetulan'],
+                        scheme: `
+                            <p><strong>1. Ayat (i) — TIDAK GRAMATIS:</strong> Susunan biasa ialah <em>"Para peserta kursus sedang mendengar taklimat di dewan seminar utama."</em> Frasa sendi nama keterangan (<em>Di dewan seminar utama</em>) didepankan secara bersendirian dan meninggalkan kata bantu (<em>sedang</em>) serta kata kerja inti (<em>mendengar</em>) di belakang subjek, sekali gus memecahkan kesatuan Frasa Kerja.<br>
+                            <em>Pembetulan Gramatis:</em> "Sedang mendengar taklimat di dewan seminar utama para peserta kursus." (Pendepanan seluruh predikat).</p>
+                            <p class="mt-2"><strong>2. Ayat (ii) — GRAMATIS:</strong> Mengalami <strong>pendepanan seluruh predikat Frasa Adjektif</strong> (<em>Sungguh lazat sekali</em>) ke hadapan subjek secara utuh tanpa memisahkan kata penguat hadapan (<em>sungguh</em>) dan belakang (<em>sekali</em>) daripada kata adjektif inti (<em>lazat</em>).</p>
+                            <p class="mt-2"><strong>3. Ayat (iii) — TIDAK GRAMATIS:</strong> Susunan biasa ialah <em>"Adik saya belum habis membaca novel sejarah itu."</em> Unsur objek/pelengkap (<em>Membaca novel sejarah itu</em>) didepankan tanpa membawa kata bantu (<em>belum</em>) dan predikat inti (<em>habis</em>).<br>
+                            <em>Pembetulan Gramatis:</em> "Belum habis membaca novel sejarah itu adik saya."</p>
+                        `
+                    },
+                    {
+                        id: 'm1_b2',
+                        num: 'Soalan 2',
+                        marks: 20,
+                        stimulus: '“Jawatankuasa Kerja Raya telah membaiki jambatan gantung yang rosak di kampung itu. Kerja-kerja penyelenggaraan tersebut dipantau secara berkala oleh jurutera daerah. Namun begitu, laporan akhir projek itu masih belum dihantar oleh awak kepada pihak kementerian.”',
+                        prompt: 'Perincikan penggunaan ragam ayat aktif dan ragam ayat pasif dalam petikan di atas dari aspek ketepatan pembentukan struktur frasa kerja pasif mengikut <em>Tatabahasa Dewan Edisi Keempat</em>.',
+                        keywords: ['aktif transitif', 'pasif', 'kata ganti nama diri kedua', 'awak', 'masih belum awak hantar', 'oleh'],
+                        scheme: `
+                            <p><strong>1. Ayat 1 (Ayat Aktif Transitif) — GRAMATIS:</strong> Subjek pelaku (<em>Jawatankuasa Kerja Raya</em>) mendahului kata bantu (<em>telah</em>), kata kerja aktif transitif berimbuhan <em>meN-...-i</em> (<em>membaiki</em>), dan objek (<em>jambatan gantung...</em>).</p>
+                            <p class="mt-2"><strong>2. Ayat 2 (Ayat Pasif KGND Ketiga) — GRAMATIS:</strong> Kata kerja pasif berimbuhan <em>di-</em> (<em>dipantau</em>) diikuti secara tepat oleh kata sendi nama <em>oleh</em> dan pelaku KGND ketiga (<em>jurutera daerah</em>).</p>
+                            <p class="mt-2"><strong>3. Ayat 3 (Ayat Pasif KGND Kedua) — TIDAK GRAMATIS:</strong> Pelaku <em>"awak"</em> ialah Kata Ganti Nama Diri Kedua. Mengikut <em>Tatabahasa Dewan Edisi Keempat</em>, pasif KGND Pertama dan Kedua tidak boleh menggunakan imbuhan <em>di-</em> dan kata sendi <em>oleh</em> (Rumus wajib: <strong>[Kata Bantu + KGND 1/2 + Kata Kerja Dasar]</strong>).<br>
+                            <em>Pembetulan Gramatis:</em> "Namun begitu, laporan akhir projek itu <strong>masih belum awak hantar</strong> kepada pihak kementerian."</p>
+                        `
+                    },
+                    {
+                        id: 'm1_b3',
+                        num: 'Soalan 3',
+                        marks: 20,
+                        stimulus: '“Siti menyiram pokok bunga di halaman rumah sementara adiknya mengemas ruang tamu. Mereka bekerjasama demi untuk meringankan beban tugas ibu bapa. Ibu yang penyayang itu berasa bangga bila melihat kerajinan anak-anaknya.”',
+                        prompt: 'Berdasarkan petikan di atas, bincangkan ketepatan dan kesalahan penggunaan kata hubung dari aspek fungsi kata hubung gabungan, kata hubung pancangan keterangan, dan kata hubung pancangan relatif mengikut <em>Tatabahasa Dewan Edisi Keempat</em>.',
+                        keywords: ['manakala', 'kelewahan', 'demi untuk', 'apabila', 'kata tanya', 'relatif'],
+                        scheme: `
+                            <p><strong>1. Ayat 1 — TIDAK GRAMATIS (<em>sementara</em>):</strong> Kata hubung pancangan keterangan waktu <em>sementara</em> digunakan apabila satu subjek melakukan dua perbuatan serentak. Oleh sebab ayat ini mempunyai dua subjek berbeza (<em>Siti</em> dan <em>adiknya</em>), kata hubung gabungan yang tepat ialah <strong>manakala</strong>.<br>
+                            <em>Pembetulan:</em> "Siti menyiram pokok bunga di halaman rumah <strong>manakala</strong> adiknya mengemas ruang tamu."</p>
+                            <p class="mt-2"><strong>2. Ayat 2 — TIDAK GRAMATIS (<em>demi untuk</em>):</strong> Berlaku <strong>kelewahan kata hubung pancangan keterangan tujuan</strong> kerana kedua-dua <em>demi</em> dan <em>untuk</em> membawa fungsi tujuan.<br>
+                            <em>Pembetulan:</em> "Mereka bekerjasama <strong>demi</strong> meringankan..." ATAU "...<strong>untuk</strong> meringankan..."</p>
+                            <p class="mt-2"><strong>3. Ayat 3 — Pancangan Relatif (<em>yang</em>) GRAMATIS</strong> (menerangkan kata nama <em>Ibu</em>), manakala <strong>Pancangan Keterangan Waktu (<em>bila</em>) TIDAK GRAMATIS</strong> kerana <em>bila</em> ialah kata tanya. Tukar kepada <strong>apabila / sewaktu / ketika</strong>.</p>
+                        `
+                    }
+                ]
+            },
+
+            modul2: {
+                id: 'modul2',
+                title: 'MODUL SIMULASI 2: KERTAS PEPERIKSAAN BMMB1084',
+                code: 'BMMB1084',
+                course: 'ASAS TATABAHASA BAHASA MELAYU',
+                time: '2 JAM',
+                totalMarks: 70,
+                bahagianA: [
+                    {
+                        id: 'm2_a1',
+                        num: 'Soalan 1',
+                        totalMarks: 15,
+                        stimulus: '“Perdana Menteri Malaysia merasmikan pameran buku antarabangsa di pusat konvensyen itu pagi tadi. Sekiranya masyarakat mengamalkan budaya membaca secara konsisten, negara kita pasti akan melahirkan generasi yang berilmu tinggi.”',
+                        subQuestions: [
+                            {
+                                id: 'm2_a1a',
+                                label: '(a)',
+                                marks: 5,
+                                prompt: 'Nilaikan kepatuhan binaan Frasa Nama (FN) dalam petikan di atas (<em>Perdana Menteri</em>, <em>pameran buku antarabangsa</em>, <em>pusat konvensyen</em>, <em>budaya membaca</em>) berdasarkan rumus Hukum D-M dan kekecualiannya menurut <em>Tatabahasa Dewan Edisi Keempat</em>.',
+                                keywords: ['perdana menteri', 'kekecualian', 'diterangkan', 'menerangkan', 'mematuhi'],
+                                scheme: `
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        <li><strong>"Perdana Menteri":</strong> <strong>Kekecualian Hukum D-M</strong> — Unsur penerang jawatan (<em>Perdana</em> - M) mendahului kata nama inti (<em>Menteri</em> - D).</li>
+                                        <li><strong>"pameran buku antarabangsa":</strong> <strong>Mematuhi Hukum D-M</strong> — <em>pameran</em> (D - Inti) + <em>buku</em> (M1 - Penerang jenis) + <em>antarabangsa</em> (M2 - Penerang taraf).</li>
+                                        <li><strong>"pusat konvensyen" &amp; "budaya membaca":</strong> <strong>Mematuhi Hukum D-M</strong> — Unsur inti kata nama (<em>pusat</em>, <em>budaya</em>) mendahului unsur penerang (<em>konvensyen</em>, <em>membaca</em>).</li>
+                                    </ul>
+                                `
+                            },
+                            {
+                                id: 'm2_a1b',
+                                label: '(b)',
+                                marks: 10,
+                                prompt: 'Huraikan fungsi klausa bebas dan klausa tak bebas dalam ayat kedua petikan di atas serta jelaskan bagaimana hubungan sintaksis antara klausa tersebut menjamin keutuhan wacana.',
+                                keywords: ['klausa bebas', 'syarat', 'sekiranya', 'relatif', 'kohesi', 'koheren'],
+                                scheme: `
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        <li><strong>Klausa Bebas (Klausa Utama):</strong> <em>"negara kita pasti akan melahirkan generasi yang berilmu tinggi"</em> — Menyampaikan gagasan atau hasil utama wacana (mengandungi klausa relatif kecil <em>yang berilmu tinggi</em>).</li>
+                                        <li><strong>Klausa Tak Bebas (Pancangan Keterangan Syarat):</strong> <em>"Sekiranya masyarakat mengamalkan budaya membaca secara konsisten"</em> — Menyatakan prasyarat yang mesti dipenuhi untuk mencapai gagasan utama.</li>
+                                    </ul>
+                                    <p class="mt-2"><strong>Keutuhan Wacana:</strong> Kata hubung pancangan syarat (<em>Sekiranya</em>) membentuk pertautan gramatis (<strong>kohesi</strong>) dan hubungan logik syarat-akibat (<strong>koheren</strong>).</p>
+                                `
+                            }
+                        ]
+                    },
+                    {
+                        id: 'm2_a2',
+                        num: 'Soalan 2',
+                        totalMarks: 15,
+                        stimulus: '“Di atas meja kayu jati itu pasu tembikar antik warisan keluarga. Mengapakah khazanah seni kraf tangan tempatan semakin dipinggirkan oleh generasi muda? Syabas, usaha gigih pengusaha kraf tangan itu akhirnya mendapat pengiktirafan antarabangsa! Marilah kita bersama-sama memartabatkan warisan budaya bangsa agar tidak lapuk dek hujan, tak lekang dek panas.”',
+                        subQuestions: [
+                            {
+                                id: 'm2_a2a',
+                                label: '(a)',
+                                marks: 5,
+                                prompt: 'Buktikan binaan ayat dasar yang terdapat dalam petikan di atas dengan menjelaskan proses penukaran susunan ayat serta penentuan pola ayat dasarnya mengikut <em>Tatabahasa Dewan Edisi Keempat</em>.',
+                                keywords: ['susunan songsang', 'fn + fs', 'subjek', 'predikat', 'pasu tembikar'],
+                                scheme: `
+                                    <p><strong>Ayat 1</strong> (<em>"Di atas meja kayu jati itu pasu tembikar antik warisan keluarga."</em>) berada dalam <strong>susunan songsang</strong> (pendepanan predikat Frasa Sendi Nama).</p>
+                                    <ul class="list-disc pl-5 space-y-1 mt-1">
+                                        <li><strong>Subjek (FN):</strong> <em>Pasu tembikar antik warisan keluarga</em></li>
+                                        <li><strong>Predikat (FS):</strong> <em>di atas meja kayu jati itu</em></li>
+                                    </ul>
+                                    <p class="mt-2"><strong>Kesimpulan:</strong> Memenuhi kriteria <strong>Ayat Dasar</strong> berpola <strong>FN + FS</strong>.</p>
+                                `
+                            },
+                            {
+                                id: 'm2_a2b',
+                                label: '(b)',
+                                marks: 10,
+                                prompt: 'Interpretasikan gabungan pelbagai jenis ayat dalam petikan di atas dari sudut dinamika retorik dan kesan emosi pembaca berbanding sekiranya petikan tersebut ditulis menggunakan ayat penyata sahaja.',
+                                keywords: ['penyata', 'tanya', 'seruan', 'perintah', 'silaan', 'retorik'],
+                                scheme: `
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        <li><strong>Ayat Penyata:</strong> Memperkenalkan objek warisan sebagai fokus wacana.</li>
+                                        <li><strong>Ayat Tanya:</strong> Mencetuskan pemikiran kritis dan kebimbangan tentang peminggiran warisan budaya.</li>
+                                        <li><strong>Ayat Seruan:</strong> Menzahirkan rasa bangga dan penghargaan atas pengiktirafan antarabangsa.</li>
+                                        <li><strong>Ayat Perintah (Silaan):</strong> Mengajak pembaca berganding bahu memartabatkan budaya (<em>Marilah kita...</em>).</li>
+                                    </ul>
+                                    <p class="mt-2"><strong>Impak Retorik:</strong> Peralihan nada daripada deskripsi &rarr; persoalan &rarr; apresiasi &rarr; ajakan menjadikan wacana lebih meyakinkan berbanding ayat penyata sahaja yang statik dan mendatar.</p>
+                                `
+                            }
+                        ]
+                    }
+                ],
+                bahagianB: [
+                    {
+                        id: 'm2_b1',
+                        num: 'Soalan 1',
+                        marks: 20,
+                        stimulus: `<ol class="list-[lower-roman] pl-6 space-y-1 not-italic font-medium text-slate-800">
+                            <li>Sedang menelaah pelajaran di perpustakaan sekumpulan pelajar tingkatan enam itu.</li>
+                            <li>Ke bandar raya Kuala Lumpur ayah dan ibu bertolak pada awal pagi tadi.</li>
+                            <li>Menyiapkan tugasan berkumpulan itu sudah selesai kami.</li>
+                        </ol>`,
+                        prompt: 'Berdasarkan ketiga-tiga ayat di atas, perincikan kegramatisan pembentukan ayat susunan songsang tersebut berpandukan hukum pendepanan seluruh predikat dan pendepanan sebahagian predikat mengikut <em>Tatabahasa Dewan Edisi Keempat</em>.',
+                        keywords: ['gramatis', 'tidak gramatis', 'pendepanan seluruh predikat', 'frasa sendi nama', 'pembetulan'],
+                        scheme: `
+                            <p><strong>1. Ayat (i) — GRAMATIS:</strong> Mengalami <strong>pendepanan seluruh predikat Frasa Kerja</strong> (<em>Sedang menelaah pelajaran di perpustakaan</em>) ke hadapan subjek secara utuh.</p>
+                            <p class="mt-2"><strong>2. Ayat (ii) — TIDAK GRAMATIS:</strong> Unsur keterangan Frasa Sendi Nama (<em>Ke bandar raya Kuala Lumpur</em>) didepankan secara terpisah daripada kata kerja tak transitif intinya (<em>bertolak</em>), sekali gus merosakkan kesatuan Frasa Kerja.<br>
+                            <em>Pembetulan Gramatis:</em> "Bertolak ke bandar raya Kuala Lumpur pada awal pagi tadi ayah dan ibu."</p>
+                            <p class="mt-2"><strong>3. Ayat (iii) — TIDAK GRAMATIS:</strong> Frasa pelengkap (<em>Menyiapkan tugasan berkumpulan itu</em>) dipisahkan daripada kata bantu (<em>sudah</em>) dan predikat inti (<em>selesai</em>).<br>
+                            <em>Pembetulan Gramatis:</em> "Sudah selesai menyiapkan tugasan berkumpulan itu kami."</p>
+                        `
+                    },
+                    {
+                        id: 'm2_b2',
+                        num: 'Soalan 2',
+                        marks: 20,
+                        stimulus: '“Pihak polis telah berjaya menumpaskan sindiket penipuan dalam talian itu semalam. Semua suspek utama kes tersebut kini ditahan oleh pihak berkuasa untuk siasatan lanjut. Walau bagaimanapun, kerugian yang dialami oleh mangsa sudah dilaporkan oleh saya di balai polis berhampiran.”',
+                        prompt: 'Perjelaskan penggunaan ragam ayat aktif dan ragam ayat pasif dalam petikan di atas dari aspek ketepatan pembentukan struktur frasa kerja pasif mengikut <em>Tatabahasa Dewan Edisi Keempat</em>.',
+                        keywords: ['aktif transitif', 'pasif', 'kata ganti nama diri pertama', 'saya', 'sudah saya laporkan'],
+                        scheme: `
+                            <p><strong>1. Ayat 1 (Ayat Aktif Transitif) — GRAMATIS:</strong> Subjek pelaku mendahului kata bantu (<em>telah berjaya</em>), kata kerja aktif transitif (<em>menumpaskan</em>), dan objek (<em>sindiket penipuan...</em>).</p>
+                            <p class="mt-2"><strong>2. Ayat 2 (Ayat Pasif KGND Ketiga) — GRAMATIS:</strong> Kata kerja pasif berimbuhan <em>di-</em> (<em>ditahan</em>) diikuti kata sendi <em>oleh</em> dan pelaku KGND ketiga (<em>pihak berkuasa</em>).</p>
+                            <p class="mt-2"><strong>3. Ayat 3 (Ayat Pasif KGND Pertama) — TIDAK GRAMATIS:</strong> Frasa <em>"sudah dilaporkan oleh saya"</em> menyalahi rumus pasif KGND Pertama kerana menggunakan imbuhan <em>di-</em> dan kata sendi <em>oleh</em>.<br>
+                            <em>Pembetulan Gramatis:</em> "Walau bagaimanapun, kerugian yang dialami oleh mangsa <strong>sudah saya laporkan</strong> di balai polis berhampiran."</p>
+                        `
+                    },
+                    {
+                        id: 'm2_b3',
+                        num: 'Soalan 3',
+                        marks: 20,
+                        stimulus: '“Amirul melayari internet untuk mencari maklumat manakala rakan-rakannya mencatat nota penting. Mereka bertungkus-lumus menyiapkan pembentangan itu agar supaya mendapat markah cemerlang. Pensyarah yang membimbing kumpulan tersebut memuji usaha mereka sewaktu sesi pembentangan berlangsung.”',
+                        prompt: 'Berdasarkan petikan di atas, bincangkan ketepatan dan kesalahan penggunaan kata hubung dari aspek fungsi kata hubung gabungan, kata hubung pancangan keterangan, dan kata hubung pancangan relatif mengikut <em>Tatabahasa Dewan Edisi Keempat</em>.',
+                        keywords: ['manakala', 'gramatis', 'kelewahan', 'agar supaya', 'relatif', 'sewaktu'],
+                        scheme: `
+                            <p><strong>1. Ayat 1 — GRAMATIS (<em>manakala</em>):</strong> Kata hubung gabungan <em>manakala</em> digunakan dengan tepat untuk menghubungkan dua klausa bebas yang mempunyai dua subjek berbeza (<em>Amirul</em> dan <em>rakan-rakannya</em>).</p>
+                            <p class="mt-2"><strong>2. Ayat 2 — TIDAK GRAMATIS (<em>agar supaya</em>):</strong> Berlaku <strong>kelewahan kata hubung pancangan keterangan tujuan</strong> kerana kedua-duanya membawa maksud tujuan.<br>
+                            <em>Pembetulan Gramatis:</em> Gunakan <strong>agar</strong> ATAU <strong>supaya</strong> sahaja.</p>
+                            <p class="mt-2"><strong>3. Ayat 3 — GRAMATIS:</strong> Kata hubung pancangan relatif (<em>yang</em>) memancangkan klausa relatif kepada kata nama <em>Pensyarah</em>, manakala kata hubung pancangan keterangan waktu (<em>sewaktu</em>) digunakan secara tepat (bukan kata tanya <em>bila</em>).</p>
+                        `
+                    }
+                ]
+            },
+
+            modul3: {
+                id: 'modul3',
+                title: 'MODUL SIMULASI 3: KERTAS PEPERIKSAAN BMMB1084',
+                code: 'BMMB1084',
+                course: 'ASAS TATABAHASA BAHASA MELAYU',
+                time: '2 JAM',
+                totalMarks: 70,
+                bahagianA: [
+                    {
+                        id: 'm3_a1',
+                        num: 'Soalan 1',
+                        totalMarks: 15,
+                        stimulus: '“Cikgu Farhana membawa murid-murid pemulihan ke bilik sumber sekolah untuk sesi bacaan bergred. Oleh sebab mereka menunjukkan minat yang mendalam, Cikgu Farhana menyediakan bahan bantu mengajar yang berwarna-warni.”',
+                        subQuestions: [
+                            {
+                                id: 'm3_a1a',
+                                label: '(a)',
+                                marks: 5,
+                                prompt: 'Nilaikan kepatuhan binaan Frasa Nama (FN) dalam petikan di atas (<em>Cikgu Farhana</em>, <em>murid-murid pemulihan</em>, <em>bilik sumber sekolah</em>, <em>bahan bantu mengajar</em>) berdasarkan rumus Hukum D-M dan kekecualian Hukum D-M mengikut <em>Tatabahasa Dewan Edisi Keempat</em>.',
+                                keywords: ['cikgu farhana', 'kekecualian', 'diterangkan', 'menerangkan', 'mematuhi'],
+                                scheme: `
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        <li><strong>"Cikgu Farhana":</strong> <strong>Kekecualian Hukum D-M</strong> — Gelaran/panggilan <em>Cikgu</em> (M - Penerang) mendahului kata nama khas <em>Farhana</em> (D - Inti).</li>
+                                        <li><strong>"murid-murid pemulihan", "bilik sumber sekolah", "bahan bantu mengajar":</strong> <strong>Mematuhi Hukum D-M</strong> — Kata nama inti (<em>murid-murid</em>, <em>bilik</em>, <em>bahan</em>) mendahului unsur penerang di belakangnya.</li>
+                                    </ul>
+                                `
+                            },
+                            {
+                                id: 'm3_a1b',
+                                label: '(b)',
+                                marks: 10,
+                                prompt: 'Huraikan fungsi klausa bebas dan klausa tak bebas dalam ayat kedua petikan di atas dalam membina kesinambungan wacana (kohesi dan koheren) yang gramatis.',
+                                keywords: ['klausa bebas', 'musabab', 'oleh sebab', 'relatif', 'kohesi', 'koheren'],
+                                scheme: `
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        <li><strong>Klausa Bebas (Klausa Utama):</strong> <em>"Cikgu Farhana menyediakan bahan bantu mengajar yang berwarna-warni"</em> — Menyatakan inisiatif atau tindakan penyelesaian utama guru (disisipi klausa relatif <em>yang berwarna-warni</em>).</li>
+                                        <li><strong>Klausa Tak Bebas (Pancangan Keterangan Musabab):</strong> <em>"Oleh sebab mereka menunjukkan minat yang mendalam"</em> — Menerangkan punca atau faktor pendorong tindakan guru.</li>
+                                    </ul>
+                                    <p class="mt-2"><strong>Kesinambungan Wacana:</strong> Kata hubung pancangan musabab (<em>Oleh sebab</em>) mengikat pertautan tatabahasa (<strong>kohesi</strong>) dan hubungan sebab-akibat yang munasabah (<strong>koheren</strong>).</p>
+                                `
+                            }
+                        ]
+                    },
+                    {
+                        id: 'm3_a2',
+                        num: 'Soalan 2',
+                        totalMarks: 15,
+                        stimulus: '“Guru cemerlang bahasa Melayu itu tokoh pendidik yang sangat disegani. Adakah kita sedar akan cabaran pengajaran tatabahasa dalam era digital masa ini? Amboi, kreatif sungguh pendekatan pengajaran berteraskan teknologi yang digunakan oleh beliau! Justeru, manfaatkanlah aplikasi digital secara bijaksana dalam bilik darjah.”',
+                        subQuestions: [
+                            {
+                                id: 'm3_a2a',
+                                label: '(a)',
+                                marks: 5,
+                                prompt: 'Buktikan binaan ayat dasar yang terdapat dalam petikan di atas dengan menganalisis struktur konstituen serta pola ayat dasarnya mengikut <em>Tatabahasa Dewan Edisi Keempat</em>.',
+                                keywords: ['susunan biasa', 'fn + fn', 'subjek', 'predikat', 'tokoh pendidik'],
+                                scheme: `
+                                    <p><strong>Ayat 1</strong> (<em>"Guru cemerlang bahasa Melayu itu tokoh pendidik yang sangat disegani."</em>) sudah berada dalam <strong>susunan biasa</strong> (ayat tunggal, penyata, aktif).</p>
+                                    <ul class="list-disc pl-5 space-y-1 mt-1">
+                                        <li><strong>Subjek (FN):</strong> <em>Guru cemerlang bahasa Melayu itu</em></li>
+                                        <li><strong>Predikat (FN):</strong> <em>tokoh pendidik yang sangat disegani</em></li>
+                                    </ul>
+                                    <p class="mt-2"><strong>Kesimpulan:</strong> Membuktikan kewujudan <strong>Ayat Dasar</strong> berpola <strong>FN + FN</strong>.</p>
+                                `
+                            },
+                            {
+                                id: 'm3_a2b',
+                                label: '(b)',
+                                marks: 10,
+                                prompt: 'Interpretasikan gabungan pelbagai jenis ayat dalam petikan di atas dari sudut dinamika retorik dan impak psikologi pembaca berbanding sekiranya keseluruhan petikan ditulis dalam bentuk ayat penyata.',
+                                keywords: ['penyata', 'tanya', 'seruan', 'perintah', 'psikologi', 'retorik'],
+                                scheme: `
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        <li><strong>Ayat Penyata:</strong> Mengukuhkan kredibiliti tokoh pendidik sebagai pembuka bicara.</li>
+                                        <li><strong>Ayat Tanya (Tertutup):</strong> Mengajak pembaca bermuhasabah tentang cabaran pengajaran era digital.</li>
+                                        <li><strong>Ayat Seruan:</strong> Meluahkan kekaguman terhadap inovasi pendekatan berteraskan teknologi.</li>
+                                        <li><strong>Ayat Perintah (Suruhan):</strong> Memberikan saranan praktikal penggunaan aplikasi digital.</li>
+                                    </ul>
+                                    <p class="mt-2"><strong>Impak Psikologi:</strong> Variasi struktur ayat merangsang keterlibatan minda dan emosi pembaca secara aktif berbanding ayat penyata semata-mata yang hambar.</p>
+                                `
+                            }
+                        ]
+                    }
+                ],
+                bahagianB: [
+                    {
+                        id: 'm3_b1',
+                        num: 'Soalan 1',
+                        marks: 20,
+                        stimulus: `<ol class="list-[lower-roman] pl-6 space-y-1 not-italic font-medium text-slate-800">
+                            <li>Untuk majlis anugerah kecemerlangan akademik hadiah-hadiah yang mahal itu.</li>
+                            <li>Dengan penuh semangat para atlet negara berjuang demi mengharumkan nama Malaysia.</li>
+                            <li>Memasak lauk kenduri itu telah selesai kaum ibu di balai raya.</li>
+                        </ol>`,
+                        prompt: 'Berdasarkan ketiga-tiga ayat di atas, perincikan kegramatisan pembentukan ayat susunan songsang tersebut berpandukan hukum pendepanan predikat dalam <em>Tatabahasa Dewan Edisi Keempat</em>.',
+                        keywords: ['gramatis', 'tidak gramatis', 'frasa sendi nama', 'pendepanan seluruh predikat', 'pembetulan'],
+                        scheme: `
+                            <p><strong>1. Ayat (i) — GRAMATIS:</strong> Mengalami <strong>pendepanan seluruh predikat Frasa Sendi Nama</strong> (<em>Untuk majlis anugerah kecemerlangan akademik</em>) ke hadapan subjek (<em>hadiah-hadiah yang mahal itu</em>) daripada pola asas FN + FS.</p>
+                            <p class="mt-2"><strong>2. Ayat (ii) — TIDAK GRAMATIS:</strong> Frasa keterangan cara (<em>Dengan penuh semangat</em>) didepankan secara bersendirian dan terpisah daripada kata kerja tak transitif intinya (<em>berjuang</em>).<br>
+                            <em>Pembetulan Gramatis:</em> "Berjuang dengan penuh semangat demi mengharumkan nama Malaysia para atlet negara."</p>
+                            <p class="mt-2"><strong>3. Ayat (iii) — TIDAK GRAMATIS:</strong> Unsur pelengkap (<em>Memasak lauk kenduri itu</em>) dipisahkan daripada kata bantu (<em>telah</em>) dan predikat inti (<em>selesai</em>).<br>
+                            <em>Pembetulan Gramatis:</em> "Telah selesai memasak lauk kenduri itu kaum ibu di balai raya."</p>
+                        `
+                    },
+                    {
+                        id: 'm3_b2',
+                        num: 'Soalan 2',
+                        marks: 20,
+                        stimulus: '“Kementerian Pendidikan Malaysia telah melancarkan dasar pemerkasaan bahasa kebangsaan pada bulan lalu. Pelbagai program kebahasaan telah dilaksanakan oleh pihak sekolah di seluruh negara. Namun demikian, buku panduan pelaksanaan program itu masih belum dibaca oleh kita secara terperinci.”',
+                        prompt: 'Perjelaskan penggunaan ragam ayat aktif dan ragam ayat pasif dalam petikan di atas dari aspek ketepatan struktur frasa kerja pasif mengikut <em>Tatabahasa Dewan Edisi Keempat</em>.',
+                        keywords: ['aktif transitif', 'pasif', 'kata ganti nama diri pertama', 'kita', 'masih belum kita baca'],
+                        scheme: `
+                            <p><strong>1. Ayat 1 (Ayat Aktif Transitif) — GRAMATIS:</strong> Subjek pelaku mendahului kata bantu (<em>telah</em>), kata kerja aktif transitif (<em>melancarkan</em>), dan objek (<em>dasar pemerkasaan...</em>).</p>
+                            <p class="mt-2"><strong>2. Ayat 2 (Ayat Pasif KGND Ketiga) — GRAMATIS:</strong> Kata kerja pasif berimbuhan <em>di-...-kan</em> (<em>dilaksanakan</em>) diikuti kata sendi <em>oleh</em> dan pelaku KGND ketiga (<em>pihak sekolah</em>).</p>
+                            <p class="mt-2"><strong>3. Ayat 3 (Ayat Pasif KGND Pertama) — TIDAK GRAMATIS:</strong> Pelaku <em>"kita"</em> ialah KGND Pertama Jamak yang wajib mengikut rumus <strong>[Kata Bantu + KGND 1 + Kata Kerja Dasar]</strong> tanpa imbuhan <em>di-</em> dan kata sendi <em>oleh</em>.<br>
+                            <em>Pembetulan Gramatis:</em> "Namun demikian, buku panduan pelaksanaan program itu <strong>masih belum kita baca</strong> secara terperinci."</p>
+                        `
+                    },
+                    {
+                        id: 'm3_b3',
+                        num: 'Soalan 3',
+                        marks: 20,
+                        stimulus: '“Hafiz mengulang kaji nota tatabahasa sambil adiknya melukis poster di ruang tamu. Dia berusaha bersungguh-sungguh kerana sebab ingin lulus dengan cemerlang dalam peperiksaan akhir. Buku rujukan yang tebal itu dibacanya berulang kali hingga larut malam.”',
+                        prompt: 'Berdasarkan petikan di atas, bincangkan ketepatan dan kesalahan penggunaan kata hubung dari aspek fungsi kata hubung gabungan, kata hubung pancangan keterangan, dan kata hubung pancangan relatif mengikut <em>Tatabahasa Dewan Edisi Keempat</em>.',
+                        keywords: ['manakala', 'sambil', 'kelewahan', 'kerana sebab', 'relatif', 'hingga'],
+                        scheme: `
+                            <p><strong>1. Ayat 1 — TIDAK GRAMATIS (<em>sambil</em>):</strong> Kata hubung pancangan keterangan <em>sambil</em> hanya sah bagi satu subjek yang melakukan dua perbuatan serentak. Bagi dua subjek berbeza (<em>Hafiz</em> dan <em>adiknya</em>), kata hubung gabungan yang tepat ialah <strong>manakala</strong>.</p>
+                            <p class="mt-2"><strong>2. Ayat 2 — TIDAK GRAMATIS (<em>kerana sebab</em>):</strong> Berlaku <strong>kelewahan kata hubung pancangan keterangan musabab</strong>.<br>
+                            <em>Pembetulan Gramatis:</em> Gunakan <strong>kerana</strong> ATAU <strong>oleh sebab</strong> sahaja.</p>
+                            <p class="mt-2"><strong>3. Ayat 3 — GRAMATIS:</strong> Kata hubung pancangan relatif (<em>yang</em>) menerangkan kata nama <em>Buku rujukan</em>, manakala kata hubung pancangan keterangan waktu (<em>hingga</em>) menunjukkan had masa secara tepat.</p>
+                        `
+                    }
+                ]
+            }
+        };
+
+        // =========================================================================
+        // 2. PANGKALAN DATA 2 MODUL SOALAN OBJEKTIF SINTAKSIS (TATABAHASA DEWAN EDISI 4)
+        // =========================================================================
+        const MCQ_MODULES = {
+            mcq1: {
+                id: 'mcq1',
+                badge: 'Mod Pengukuhan Teras • Modul 1',
+                badgeStyle: 'bg-emerald-500/20 text-emerald-300 border-emerald-400/30',
+                title: 'Latih Tubi Objektif 1: Asas & Aplikasi Sintaksis (25 Soalan)',
+                subtitle: 'Merangkumi Binaan Frasa, Klausa, Pola Ayat Dasar, Jenis Ayat, Susunan Songsang, Ragam Pasif & Ayat Majmuk',
+                questions: [
+                    {
+                        q: "Dalam binaan ayat 'Semua pelajar tahun akhir Institut Pendidikan Guru itu sedang menjalani praktikum', apakah unsur inti bagi frasa subjeknya?",
+                        options: ["Semua", "Pelajar", "Tahun akhir", "Institut Pendidikan Guru"],
+                        answer: 1,
+                        explanation: "Menurut Tatabahasa Dewan Edisi Keempat, 'pelajar' ialah kata nama inti yang diterangkan oleh penerang-penerang di hadapan dan di belakangnya."
+                    },
+                    {
+                        q: "Antara frasa nama berikut, manakah yang mematuhi Hukum D-M (Diterangkan - Menerangkan) dengan tepat?",
+                        options: ["Mini bas dan cili sos", "Klinik pergigian dan sos tomato", "Lain-lain perkara dan goreng pisang", "Ibu pejabat dan telur kuning"],
+                        answer: 1,
+                        explanation: "'Klinik' (D) + 'pergigian' (M) dan 'sos' (D) + 'tomato' (M) mematuhi Hukum D-M sepenuhnya."
+                    },
+                    {
+                        q: "Mengapakah binaan frasa kerja 'sedang menyemak buku latihan murid' diklasifikasikan sebagai frasa kerja transitif?",
+                        options: ["Kerana mempunyai kata bantu aspek 'sedang'", "Kerana kata kerja 'menyemak' memerlukan objek frasa nama secara langsung", "Kerana boleh dipasifkan dengan imbuhan 'ter-'", "Kerana diakhiri oleh frasa nama majmuk"],
+                        answer: 1,
+                        explanation: "Frasa kerja transitif mengandungi kata kerja transitif yang wajib diikuti oleh frasa nama sebagai objek atau penyambut untuk melengkapkan maksudnya."
+                    },
+                    {
+                        q: "Pilih ayat yang mengandungi binaan frasa adjektif dengan unsur penguat bebas.",
+                        options: ["Bangunan pencakar langit itu paling tinggi di bandar ini.", "Suara penyanyi undangan majlis itu amat merdu sekali.", "Buah mangga yang dipetik oleh datuk itu manis betul.", "Cuaca pada pagi hari ini agak mendung."],
+                        answer: 1,
+                        explanation: "Kata penguat bebas ('amat', 'sangat', 'sungguh') boleh hadir di hadapan atau di belakang kata adjektif, dan boleh bergabung dengan penguat belakang 'sekali' (amat merdu sekali)."
+                    },
+                    {
+                        q: "Manakah antara binaan frasa sendi nama berikut yang GRAMATIS mengikut rumus Tatabahasa Dewan Edisi Keempat?",
+                        options: ["Dari sudut pandangan masyarakat setempat", "Daripada sudut pandangan masyarakat setempat", "Di dalam era globalisasi masa kini", "Ke di dalam dewan peperiksaan"],
+                        answer: 0,
+                        explanation: "Kata sendi nama 'dari' digunakan untuk menyatakan arah, tempat, atau waktu (termasuk ungkapan abstrak berkonsep arah/tempat seperti 'dari sudut pandangan')."
+                    },
+                    {
+                        q: "Apakah ciri utama yang membezakan klausa daripada frasa dalam tatatingkat sintaksis bahasa Melayu?",
+                        options: ["Klausa sentiasa diakhiri dengan tanda noktah", "Klausa mempunyai konstituen subjek dan predikat di dalamnya", "Klausa terdiri daripada sekurang-kurangnya lima patah perkataan", "Klausa tidak boleh menjadi konstituen kepada ayat"],
+                        answer: 1,
+                        explanation: "Klausa ialah unit rangkaian perkataan yang mengandungi subjek dan predikat serta menjadi konstituen kepada ayat."
+                    },
+                    {
+                        q: "Dalam ayat 'Bahawa kejayaan cemerlang memerlukan disiplin yang tinggi memang tidak dapat disangkal lagi', apakah fungsi klausa 'Bahawa kejayaan cemerlang memerlukan disiplin yang tinggi'?",
+                        options: ["Klausa relatif subjek", "Klausa komplemen subjek", "Klausa keterangan syarat", "Klausa bebas utama"],
+                        answer: 1,
+                        explanation: "Klausa yang didahului kata hubung komplemen 'bahawa' dan menduduki bahagian hadapan ayat berfungsi sebagai klausa komplemen subjek."
+                    },
+                    {
+                        q: "Antara ayat berikut, manakah yang merupakan ayat dasar dalam bahasa Melayu?",
+                        options: ["Siapakah yang membentangkan kertas kerja itu?", "Pegawai pendidikan daerah itu sedang menyampaikan taklimat kurikulum.", "Sangat rajin mengulang kaji pelajaran pelajar cemerlang itu.", "Adik tidak hadir ke sekolah pada hari ini."],
+                        answer: 1,
+                        explanation: "Ayat dasar mestilah ayat tunggal, ayat penyata, ragam aktif, dan dalam susunan biasa (Subjek + Predikat) tanpa unsur penafian atau ayat tanya."
+                    },
+                    {
+                        q: "Tentukan pola ayat dasar bagi ayat: 'Bungkusan hadiah istimewa itu untuk guru pembimbing kami.'",
+                        options: ["Frasa Nama + Frasa Nama (FN + FN)", "Frasa Nama + Frasa Kerja (FN + FK)", "Frasa Nama + Frasa Adjektif (FN + FA)", "Frasa Nama + Frasa Sendi Nama (FN + FS)"],
+                        answer: 3,
+                        explanation: "Subjek ialah 'Bungkusan hadiah istimewa itu' (FN) dan predikat ialah 'untuk guru pembimbing kami' yang dimulakan dengan kata sendi nama 'untuk' (FS)."
+                    },
+                    {
+                        q: "Pilih ayat yang menepati pola ayat dasar Frasa Nama + Frasa Adjektif (FN + FA).",
+                        options: ["Pakaian seragam pasukan kadet polis itu sungguh kemas.", "Encik Hamzah pengetua sekolah menengah baharu itu.", "Pelajar-pelajar sedang berkumpul di tapak perhimpunan.", "Surat rasmi tersebut daripada Kementerian Pendidikan Malaysia."],
+                        answer: 0,
+                        explanation: "Subjek 'Pakaian seragam pasukan kadet polis itu' (FN) dan predikat 'sungguh kemas' (FA)."
+                    },
+                    {
+                        q: "Apakah perbezaan utama antara ayat tunggal dengan ayat dasar?",
+                        options: ["Ayat tunggal mempunyai dua klausa, manakala ayat dasar mempunyai satu klausa", "Ayat tunggal boleh terdiri daripada ayat tanya dan susunan songsang, manakala ayat dasar hanya ayat penyata susunan biasa", "Ayat dasar boleh berbentuk ayat pasif, manakala ayat tunggal mestilah aktif", "Tiada sebarang perbezaan antara kedua-duanya"],
+                        answer: 1,
+                        explanation: "Semua ayat dasar ialah ayat tunggal, tetapi tidak semua ayat tunggal ialah ayat dasar kerana ayat tunggal merangkumi ayat tanya, perintah, seruan, pasif, dan songsang."
+                    },
+                    {
+                        q: "Apakah jenis ayat tanya bagi ayat berikut: 'Anda sudah menghantar draf tugasan sintaksis kepada pensyarah?'",
+                        options: ["Ayat tanya terbuka dengan kata tanya", "Ayat tanya tertutup tanpa kata tanya", "Ayat tanya dengan partikel -kah", "Ayat tanya retorik bersongsang"],
+                        answer: 1,
+                        explanation: "Ayat tanya yang tidak menggunakan kata tanya dan hanya memerlukan jawapan 'ya' atau 'tidak' dikenali sebagai ayat tanya tertutup tanpa kata tanya."
+                    },
+                    {
+                        q: "Pilih ayat perintah yang tergolong dalam jenis ayat silaan.",
+                        options: ["Tolong tutup pintu dewan kuliah sebelum keluar.", "Usah dikenang lagi peristiwa silam yang menyedihkan itu.", "Sila ambil tempat duduk masing-masing kerana majlis akan bermula.", "Hantar buku latihan tatabahasa kamu sekarang juga!"],
+                        answer: 2,
+                        explanation: "Ayat silaan menggunakan kata silaan seperti 'sila' atau 'jemput' untuk mempersilakan seseorang melakukan sesuatu."
+                    },
+                    {
+                        q: "Manakah antara ayat berikut merupakan ayat seruan yang GRAMATIS mengikut peraturan Tatabahasa Dewan Edisi Keempat?",
+                        options: ["Wah, cantiknya pemandangan matahari terbenam di pantai ini!", "Aduhai, sakitnya gigiku ini.", "Syabas atas kejayaan cemerlang pasukan bahas kita.", "Amboi sombongnya budak baharu itu!"],
+                        answer: 0,
+                        explanation: "Ayat seruan wajib dimulakan dengan kata seru (Wah), diikuti tanda koma (,), dan diakhiri dengan tanda seru (!) di penghujung ayat."
+                    },
+                    {
+                        q: "Tukarkan ayat susunan biasa berikut kepada ayat susunan songsang dengan mengedepankan seluruh predikat: 'Peserta kursus itu sangat tekun mencatat nota penting sepanjang ceramah berlangsung.'",
+                        options: ["Sepanjang ceramah berlangsung peserta kursus itu sangat tekun mencatat nota penting.", "Sangat tekun mencatat nota penting sepanjang ceramah berlangsung peserta kursus itu.", "Mencatat nota penting peserta kursus itu sangat tekun sepanjang ceramah berlangsung.", "Peserta kursus itu mencatat nota penting sangat tekun sepanjang ceramah berlangsung."],
+                        answer: 1,
+                        explanation: "Pendepanan seluruh predikat memindahkan kesemua unsur predikat ('sangat tekun mencatat nota penting sepanjang ceramah berlangsung') ke hadapan subjek."
+                    },
+                    {
+                        q: "Apakah jenis proses pendepanan yang berlaku dalam ayat susunan songsang: 'Ke perpustakaan negara sekumpulan mahasiswa itu pergi pagi tadi.' (Bandingkan kegramatisannya dengan 'Pergi ke perpustakaan negara sekumpulan mahasiswa itu pagi tadi.')?",
+                        options: ["Pendepanan seluruh predikat Frasa Kerja yang gramatis", "Pendepanan sebahagian predikat yang tidak gramatis kerana memisahkan keterangan daripada kata kerja inti", "Pendepanan Frasa Adjektif secara utuh", "Pendepanan subjek majmuk"],
+                        answer: 1,
+                        explanation: "Keterangan Frasa Sendi Nama tidak boleh didepankan secara berasingan dengan meninggalkan kata kerja inti 'pergi' di belakang subjek."
+                    },
+                    {
+                        q: "Pilih bentuk pasif yang PALING GRAMATIS bagi ayat aktif: 'Saya telah menyiapkan kertas kerja penyelidikan tindakan itu semalam.'",
+                        options: ["Kertas kerja penyelidikan tindakan itu telah disiapkan oleh saya semalam.", "Kertas kerja penyelidikan tindakan itu telah saya siapkan semalam.", "Kertas kerja penyelidikan tindakan itu saya telah siapkan semalam.", "Telah disiapkan oleh saya kertas kerja penyelidikan tindakan itu semalam."],
+                        answer: 1,
+                        explanation: "Bagi pelaku Kata Ganti Nama Diri Pertama ('saya'), kata bantu ('telah') wajib mendahului pelaku dan kata kerja dasar tanpa imbuhan 'di-' dan 'oleh'."
+                    },
+                    {
+                        q: "Antara ayat berikut, manakah ayat pasif dengan kata ganti nama diri ketiga yang GRAMATIS?",
+                        options: ["Tugasan berkumpulan itu telah dibentangkan oleh mereka di hadapan kelas.", "Tugasan berkumpulan itu telah mereka bentangkan di hadapan kelas.", "Tugasan berkumpulan itu telah dibentang oleh kami semalam.", "Tugasan berkumpulan itu dibentangkan oleh awak dengan lancar."],
+                        answer: 0,
+                        explanation: "Pelaku 'mereka' ialah Kata Ganti Nama Diri Ketiga, maka kata kerja pasif wajib berimbuhan 'di-...-kan' dan didahului kata sendi 'oleh'."
+                    },
+                    {
+                        q: "Manakah antara ayat berikut merupakan ayat pasif dengan kata bantu pasif 'kena'?",
+                        options: ["Pencuri motosikal itu kena tangkap oleh pihak polis malam tadi.", "Adik kena pergi ke sekolah pada awal pagi esok.", "Semua calon peperiksaan kena mematuhi peraturan dewan.", "Dia terkena bola yang ditendang oleh rakannya."],
+                        answer: 0,
+                        explanation: "Kata 'kena' sebelum kata kerja dasar ('kena tangkap') berfungsi sebagai penanda pasif yang boleh ditukarkan kepada 'ditangkap'."
+                    },
+                    {
+                        q: "Apakah jenis ayat majmuk bagi ayat: 'Pensyarah itu masuk ke dalam dewan kuliah lalu memulakan sesi pembentangan.'?",
+                        options: ["Ayat majmuk gabungan", "Ayat majmuk pancangan relatif", "Ayat majmuk pancangan komplemen", "Ayat majmuk pancangan keterangan"],
+                        answer: 0,
+                        explanation: "Kata hubung 'lalu' ialah kata hubung gabungan yang menggabungkan dua klausa bebas yang berurutan masanya."
+                    },
+                    {
+                        q: "Pilih ayat majmuk pancangan relatif yang GRAMATIS.",
+                        options: ["Buku tatabahasa yang tebal itu dibeli oleh kakak di Pesta Buku Antarabangsa.", "Dia memberitahu bahawa dia akan menghadiri bengkel penulisan esok.", "Murid-murid beratur dengan tertib sebelum masuk ke dalam makmal komputer.", "Ayah membaca surat khabar manakala ibu menyiram pokok bunga."],
+                        answer: 0,
+                        explanation: "Kata hubung pancangan relatif 'yang' memancangkan klausa relatif ('tebal itu') untuk menerangkan frasa nama 'Buku tatabahasa'."
+                    },
+                    {
+                        q: "Dalam ayat 'Untuk pelajar menguasai tatabahasa Melayu dengan baik memerlukan latihan yang berterusan', apakah jenis klausa pancangan yang menduduki bahagian subjek ayat tersebut?",
+                        options: ["Klausa relatif", "Klausa komplemen", "Klausa keterangan tujuan", "Klausa gabungan"],
+                        answer: 1,
+                        explanation: "Kata hubung 'untuk' di awal ayat yang memancangkan klausa sebagai subjek ayat berfungsi sebagai kata hubung komplemen."
+                    },
+                    {
+                        q: "Tentukan jenis keterangan bagi klausa berpancang dalam ayat: 'Walaupun hujan turun dengan lebat, para peserta tetap meneruskan larian amal tersebut.'",
+                        options: ["Keterangan musabab", "Keterangan syarat", "Keterangan pertentangan", "Keterangan akibat"],
+                        answer: 2,
+                        explanation: "Kata hubung 'walaupun' (bersama 'meskipun', 'sungguhpun', 'kendatipun') membentuk klausa pancangan keterangan pertentangan."
+                    },
+                    {
+                        q: "Mengapakah ayat 'Murid-murid yang tekun belajar itu sedang mengulang kaji pelajaran sementara menunggu guru mereka tiba' dikategorikan sebagai ayat majmuk campuran?",
+                        options: ["Kerana mempunyai lebih daripada sepuluh patah perkataan", "Kerana mengandungi lebih daripada satu jenis ayat majmuk, iaitu pancangan relatif dan pancangan keterangan", "Kerana menggabungkan ayat penyata dengan ayat perintah", "Kerana subjeknya terdiri daripada kata ganda"],
+                        answer: 1,
+                        explanation: "Ayat majmuk campuran mengandungi lebih daripada satu jenis binaan ayat majmuk (dalam ayat ini: pancangan relatif 'yang tekun belajar' + pancangan keterangan waktu 'sementara menunggu...')."
+                    },
+                    {
+                        q: "Kenal pasti ayat yang mempunyai kesalahan struktur sintaksis (ayat tergantung tanpa subjek).",
+                        options: ["Dalam mesyuarat agung tahunan itu telah meluluskan usul penambahbaikan kurikulum.", "Mesyuarat agung tahunan itu telah meluluskan usul penambahbaikan kurikulum.", "Usul penambahbaikan kurikulum telah diluluskan dalam mesyuarat agung tahunan itu.", "Para perwakilan menghadiri mesyuarat agung tahunan tersebut."],
+                        answer: 0,
+                        explanation: "Kehadiran kata sendi nama 'Dalam' di hadapan frasa nama 'mesyuarat agung tahunan itu' menjadikannya frasa sendi nama (keterangan), menyebabkan ayat kehilangan konstituen subjek."
+                    }
+                ]
+            },
+
+            mcq2: {
+                id: 'mcq2',
+                badge: 'Mod Analisis Kritis & KBAT • Modul 2',
+                badgeStyle: 'bg-amber-500/20 text-amber-300 border-amber-400/30',
+                title: 'Latih Tubi Objektif 2: Aras Mencabar / KBAT Sintaksis (25 Soalan)',
+                subtitle: 'Menguji Analisis Halus Tatabahasa Dewan Edisi Keempat: Pasif Imbuhan ter-/ber-/ke-...-an, Pendepanan Kompleks, Ayat Majmuk Berlapis & Kegramatisan',
+                questions: [
+                    {
+                        q: "Teliti binaan Frasa Nama berikut: 'Calon ketua pengawas sekolah menengah kebangsaan yang berwibawa itu'. Manakah analisis unsur yang TEPAT mengikut Tatabahasa Dewan Edisi Keempat?",
+                        options: ["'Calon' ialah inti; 'ketua pengawas sekolah menengah kebangsaan yang berwibawa itu' ialah penerang", "'Ketua pengawas' ialah inti; 'calon' ialah penerang hadapan dan 'sekolah menengah...' ialah penerang belakang", "'Sekolah menengah kebangsaan' ialah inti; 'Calon ketua pengawas' ialah penerang", "Frasa ini melanggar Hukum D-M kerana perkataan 'Calon' mendahului 'ketua pengawas'"],
+                        answer: 0,
+                        explanation: "Dalam binaan FN ini, kata nama pertama 'Calon' bertindak sebagai unsur inti (D) yang diterangkan oleh rangkai kata penerang 'ketua pengawas sekolah menengah kebangsaan yang berwibawa itu' (M)."
+                    },
+                    {
+                        q: "Antara kumpulan Frasa Nama berikut, manakah yang KESEMUANYA tergolong dalam kekecualian Hukum D-M (Penerang mendahului Diterangkan) menurut Tatabahasa Dewan Edisi Keempat?",
+                        options: ["Perdana Menteri, Naib Canselor, Timbalan Pengarah, Ibu Pejabat", "Perdana Menteri, Timbalan Menteri, Naib Presiden, Pembantu Tadbir", "Ibu Pejabat, Mini Parlimen, Telur Kuning, Goreng Pisang", "Naib Pengerusi, Ketua Hakim Negara, Perdana Menteri, Setiausaha Agung"],
+                        answer: 1,
+                        explanation: "Kekecualian Hukum D-M hanya berlaku pada nama jawatan/gelaran tertentu seperti Perdana Menteri, Timbalan Menteri, Naib Presiden, dan Pembantu Tadbir (Penerang + Inti). 'Ibu Pejabat' dan 'Ketua Hakim Negara' mematuhi Hukum D-M (Inti + Penerang)."
+                    },
+                    {
+                        q: "Mengapakah ayat 'Mahasiswa tahun akhir itu sedang memperdalami ilmu sintaksis bahasa Melayu' dianggap TIDAK GRAMATIS dari sudut binaan frasa kerja transitif?",
+                        options: ["Kerana kata kerja 'memperdalami' tidak boleh diikuti oleh objek frasa nama", "Kerana apitan 'memper-...-i' tidak boleh bergabung dengan kata adjektif 'dalam'; bentuk yang tepat ialah 'memperdalam'", "Kerana kata bantu 'sedang' tidak serasi dengan imbuhan 'memper-...-i'", "Kerana frasa nama 'ilmu sintaksis bahasa Melayu' ialah pelengkap, bukan objek"],
+                        answer: 1,
+                        explanation: "Menurut Tatabahasa Dewan Edisi Keempat, imbuhan 'memper-...-i' tidak produktif dengan kata adjektif (kecuali 'memperingati'). Untuk membawa maksud menjadikan lebih dalam, awalan 'memper-' ('memperdalam') hendaklah digunakan."
+                    },
+                    {
+                        q: "Pilih ayat yang mengandungi binaan Frasa Kerja Tak Transitif Berpelengkap yang GRAMATIS.",
+                        options: ["Keadaan kesihatan datuk beransur pulih sejak semalam.", "Dia beransur dari majlis keramaian itu pada pukul sepuluh malam.", "Penceramah jemputan itu sedang menghuraikan tajuk sintaksis.", "Para peserta seminar bersurai selepas majlis penutupan."],
+                        answer: 0,
+                        explanation: "Kata kerja tak transitif 'beransur' memerlukan unsur pelengkap ('pulih') untuk melengkapkan maksudnya dan tidak boleh dipasifkan. 'Bersurai' ialah tak transitif tanpa pelengkap, manakala 'menghuraikan' ialah transitif."
+                    },
+                    {
+                        q: "Dalam ayat 'Rombongan kebudayaan dari Sabah itu bertolak ke Semenanjung Malaysia dengan menaiki pesawat pagi tadi', berapakah bilangan Frasa Sendi Nama yang terdapat dalam ayat tersebut?",
+                        options: ["Satu (ke Semenanjung Malaysia)", "Dua (dari Sabah; ke Semenanjung Malaysia)", "Tiga (dari Sabah; ke Semenanjung Malaysia; dengan menaiki pesawat)", "Empat (dari Sabah; ke Semenanjung; dengan menaiki; pagi tadi)"],
+                        answer: 2,
+                        explanation: "Terdapat tiga Frasa Sendi Nama: (1) 'dari Sabah' (penerang FN subjek), (2) 'ke Semenanjung Malaysia' (keterangan arah), dan (3) 'dengan menaiki pesawat' (kata sendi 'dengan' diikuti frasa kerja sebagai pelengkap/keterangan cara)."
+                    },
+                    {
+                        q: "Teliti ayat: 'Bahawa bahasa Melayu mampu menjadi bahasa ilmu tinggi di persada antarabangsa sudah terbukti sejak zaman kesultanan Melayu lagi.' Mengapakah klausa subjek dalam ayat ini tidak boleh digugurkan kata hubung 'Bahawa'?",
+                        options: ["Kerana pengguguran 'Bahawa' akan menukarkan ayat majmuk komplemen menjadi ayat penyata tunggal yang kabur batas subjek dan predikatnya", "Kerana 'Bahawa' berfungsi sebagai kata hubung pancangan relatif wajib", "Kerana kata hubung 'Bahawa' ialah penanda ragam ayat pasif", "Kerana predikat ayat ini terdiri daripada Frasa Sendi Nama"],
+                        answer: 0,
+                        explanation: "Kata hubung komplemen 'Bahawa' menandai seluruh klausa selepasnya sebagai satu konstituen frasa nama subjek (klausa komplemen subjek). Tanpa 'Bahawa', binaan ayat menjadi tergantung dan kabur."
+                    },
+                    {
+                        q: "Manakah antara ayat berikut yang mengandungi KLAUSA KOMPLEMEN OBJEK TEPAT (mengikuti kata kerja transitif aktif)?",
+                        options: ["Kami menyedari bahawa penguasaan tatabahasa memerlukan latihan yang konsisten.", "Pihak sekolah sedar bahawa tahap literasi murid perlu ditingkatkan segera.", "Hakikat bahawa setiap bahasa mempunyai sistem peraturannya sendiri tidak dapat dinafikan.", "Untuk pelajar menguasai sintaksis dalam masa sehari amat mustahil."],
+                        answer: 0,
+                        explanation: "Dalam pilihan A, klausa komplemen 'bahawa penguasaan tatabahasa...' hadir secara langsung selepas kata kerja transitif aktif 'menyedari' sebagai objek tepat. Dalam B ('sedar' = kata adjektif), C (komplemen FN), dan D (komplemen subjek)."
+                    },
+                    {
+                        q: "Antara berikut, manakah ayat yang mempunyai pola ayat dasar Frasa Nama + Frasa Nama (FN + FN) setelah ditukarkan daripada susunan songsang dan digugurkan unsur keterangan?",
+                        options: ["Tokoh budayawan yang dihormati ramai itu pengasas persatuan penulis.", "Sungguh strategik kedudukan pusat sumber baharu sekolah itu.", "Untuk golongan belia yang berwawasan program keusahawanan tersebut.", "Sedang membentangkan kertas kajian tindakan sekumpulan guru pelatih itu."],
+                        answer: 0,
+                        explanation: "Pilihan A: Subjek 'Tokoh budayawan... itu' (FN) + Predikat 'pengasas persatuan penulis' (FN). Pilihan B ialah FN + FA, C ialah FN + FS, dan D ialah FN + FK."
+                    },
+                    {
+                        q: "Kenal pasti ayat yang BUKAN ayat tunggal walaupun kelihatan panjang dan kompleks.",
+                        options: ["Ketua Pengarah Pendidikan Malaysia merasmikan Persidangan Kebangsaan Pendidikan Bahasa Melayu di Putrajaya semalam.", "Semua calon Program Persediaan Ijazah Sarjana Muda Perguruan wajib menduduki peperiksaan akhir semester ini.", "Pensyarah kanan Jabatan Pengajian Melayu menyampaikan syarahan perdana tentang perkembangan nahu mutakhir.", "Pelajar cemerlang yang memenangi pertandingan pidato itu menerima hadiah daripada Menteri Pendidikan."],
+                        answer: 3,
+                        explanation: "Pilihan D mengandungi kata hubung pancangan relatif 'yang' ('yang memenangi pertandingan pidato itu'), menjadikannya ayat majmuk pancangan relatif (2 klausa), manakala A, B, dan C hanya mempunyai 1 klausa (ayat tunggal)."
+                    },
+                    {
+                        q: "Dalam Tatabahasa Dewan Edisi Keempat, ayat tanya songsang sering digunakan dalam wacana rasmi. Pilih ayat tanya susunan songsang dengan pendepanan predikat yang PALING GRAMATIS.",
+                        options: ["Sudahkah anda menyemak semula semua jawapan sebelum menyerahkan kertas peperiksaan?", "Anda sudahkah menyemak semula semua jawapan sebelum menyerahkan kertas peperiksaan?", "Menyemak semula semua jawapankah anda sebelum menyerahkan kertas peperiksaan?", "Sudah anda menyemak semulakah semua jawapan sebelum menyerahkan kertas peperiksaan?"],
+                        answer: 0,
+                        explanation: "Dalam ayat tanya songsang, partikel '-kah' wajib dilekatkan pada unsur predikat yang dikedepankan di awal ayat ('Sudahkah anda...'), bukan pada subjek atau di tengah frasa secara janggal."
+                    },
+                    {
+                        q: "Teliti ayat perintah berikut: 'Janganlah hendaknya kita mudah berputus asa apabila menghadapi kegagalan dalam peperiksaan.' Apakah gabungan unsur yang membina ayat perintah tersebut?",
+                        options: ["Kata larangan 'jangan' + partikel pelembut '-lah' + kata penegas 'hendaknya'", "Kata silaan + kata bantu aspek + klausa relatif", "Kata permintaan + kata penguat bebas + klausa komplemen", "Kata suruhan + partikel tanya '-kah' + keterangan syarat"],
+                        answer: 0,
+                        explanation: "Ayat larangan boleh dilembutkan dengan menambahkan partikel '-lah' pada kata larangan ('Janganlah') serta ungkapan 'hendaknya' untuk menukar nada keras kepada nasihat."
+                    },
+                    {
+                        q: "Manakah antara ayat susunan songsang berikut yang mengalami PENDEPANAN SEBAHAGIAN PREDIKAT (Frasa Adjektif sahaja) secara GRAMATIS mengikut rumus Tatabahasa Dewan Edisi Keempat?",
+                        options: ["Amat bijaksana sekali tindakan pengetua menyelesaikan kemelut disiplin itu.", "Amat bijaksana sekali tindakan pengetua itu dalam menyelesaikan kemelut disiplin.", "Tindakan pengetua amat bijaksana sekali dalam menyelesaikan kemelut disiplin itu.", "Dalam menyelesaikan kemelut disiplin tindakan pengetua itu amat bijaksana sekali."],
+                        answer: 1,
+                        explanation: "Susunan biasa: 'Tindakan pengetua itu (S) + amat bijaksana sekali (FA) dalam menyelesaikan kemelut disiplin (FS keterangan)'. Apabila hanya FA 'Amat bijaksana sekali' dikedepankan dan FS keterangan kekal di belakang subjek, berlaku pendepanan sebahagian predikat (FA)."
+                    },
+                    {
+                        q: "Mengapakah ayat susunan songsang 'Ke kota metropolitan Kuala Lumpur ayah bertolak pada awal pagi tadi' dianggap TIDAK GRAMATIS menurut analisis sintaksis Tatabahasa Dewan Edisi Keempat?",
+                        options: ["Kerana kata sendi nama 'Ke' tidak boleh hadir di pangkal ayat", "Kerana frasa sendi nama keterangan tidak boleh dikedepankan secara bersendirian tanpa kata kerja inti 'bertolak'", "Kerana kata kerja 'bertolak' ialah kata kerja transitif yang memerlukan objek", "Kerana frasa keterangan waktu 'pada awal pagi tadi' wajib diletakkan di hadapan subjek"],
+                        answer: 1,
+                        explanation: "Menurut hukum pendepanan frasa kerja, unsur keterangan (FS) tidak boleh dipisahkan daripada kata kerja intinya ('bertolak') untuk dikedepankan secara bersendirian."
+                    },
+                    {
+                        q: "Pilih bentuk pasif dengan imbuhan 'ter-' yang GRAMATIS mengikut Tatabahasa Dewan Edisi Keempat.",
+                        options: ["Batu yang besar itu tidak terangkat oleh adik saya.", "Batu yang besar itu tidak terangkat adik saya.", "Batu yang besar itu tidak terangkatkan oleh adik saya.", "Adik saya tidak terangkat batu yang besar itu."],
+                        answer: 0,
+                        explanation: "Dalam binaan ayat pasif dengan imbuhan 'ter-' ('terangkat'), kata sendi nama 'oleh' wajib hadir sebelum frasa nama pelaku ('oleh adik saya') dan tidak boleh digugurkan."
+                    },
+                    {
+                        q: "Manakah antara ayat berikut merupakan ayat pasif dengan imbuhan 'ke-...-an' yang TEPAT dari segi fungsi sintaksisnya?",
+                        options: ["Penduduk kampung di kawasan rendah itu kehujanan semasa pulang dari kebun.", "Pihak penganjur majlis itu kehujanan tetamu kehormat petang tadi.", "Mereka kehujanan oleh hujan lebat yang turun sejak tengah hari.", "Baju yang dijemur di ampaian itu telah dikehujanankan semalam."],
+                        answer: 0,
+                        explanation: "Imbuhan 'ke-...-an' dalam 'kehujanan' membentuk kata kerja pasif yang membawa makna subjek mengalami sesuatu keadaan tanpa memerlukan pelaku 'oleh'."
+                    },
+                    {
+                        q: "Tukarkan ayat aktif berikut kepada ayat pasif yang PALING GRAMATIS: 'Kita mestilah menghormati pandangan setiap ahli mesyuarat demi keharmonian organisasi.'",
+                        options: ["Pandangan setiap ahli mesyuarat mestilah dihormati oleh kita demi keharmonian organisasi.", "Pandangan setiap ahli mesyuarat mestilah kita hormati demi keharmonian organisasi.", "Pandangan setiap ahli mesyuarat kita mestilah hormati demi keharmonian organisasi.", "Mestilah dihormati oleh kita pandangan setiap ahli mesyuarat demi keharmonian organisasi."],
+                        answer: 1,
+                        explanation: "Pelaku 'kita' ialah Kata Ganti Nama Diri Pertama Jamak. Rumus wajib: [Kata Bantu + Partikel ('mestilah') + KGND 1 ('kita') + Kata Kerja Dasar ('hormati')] tanpa imbuhan 'di-' dan 'oleh'."
+                    },
+                    {
+                        q: "Teliti ayat: 'Pegawai penyelidik yang berpengalaman luas itu menjelaskan bahawa dapatan kajian tersebut sahih walaupun sampelnya terhad.' Berapakah jumlah klausa yang membina ayat majmuk campuran ini?",
+                        options: ["Dua klausa", "Tiga klausa", "Empat klausa", "Lima klausa"],
+                        answer: 3,
+                        explanation: "Terdapat 4 klausa: (1) Klausa utama: 'Pegawai penyelidik itu menjelaskan...', (2) Klausa relatif: 'yang berpengalaman luas itu', (3) Klausa komplemen: 'bahawa dapatan kajian tersebut sahih', dan (4) Klausa keterangan pertentangan: 'walaupun sampelnya terhad'."
+                    },
+                    {
+                        q: "Pilih ayat yang mengandungi KESALAHAN penggunaan kata hubung pancangan keterangan.",
+                        options: ["Para peserta berkumpul di dewan utama sementara menunggu ketibaan perasmi.", "Hafiz membaca buku rujukan manakala adiknya menyiapkan latihan tatabahasa.", "Kami berdoa semoga semua calon peperiksaan beroleh kejayaan yang cemerlang.", "Oleh kerana jalan raya dinaiki air, kenderaan ringan tidak dibenarkan melaluinya."],
+                        answer: 3,
+                        explanation: "Kata sendi nama 'Oleh' tidak boleh diikuti secara langsung oleh kata hubung 'kerana' ('Oleh kerana' adalah salah). Bentuk yang gramatis ialah 'Oleh sebab' atau 'Kerana'."
+                    },
+                    {
+                        q: "Mengapakah ayat 'Murid-murid yang mana gagal dalam ujian diagnostik akan mengikuti kelas pemulihan khas' dianggap TIDAK GRAMATIS?",
+                        options: ["Kerana kata kerja 'mengikuti' tidak memerlukan objek", "Kerana gabungan kata tanya 'yang mana' tidak boleh digunakan sebagai kata hubung pancangan relatif", "Kerana frasa 'kelas pemulihan khas' menyalahi Hukum D-M", "Kerana kata bantu 'akan' tidak boleh hadir selepas klausa relatif"],
+                        answer: 1,
+                        explanation: "Dalam Tatabahasa Dewan Edisi Keempat, 'yang mana' ialah bentuk terjemahan daripada bahasa Inggeris ('which') dan salah digunakan sebagai kata hubung relatif; hanya 'yang' sahaja yang gramatis."
+                    },
+                    {
+                        q: "Kenal pasti ayat yang mempunyai struktur subjek dan predikat yang LENGKAP serta GRAMATIS.",
+                        options: ["Dengan keberangkatan tiba Kebawah Duli Yang Maha Mulia Seri Paduka Baginda Yang di-Pertuan Agong telah menyerikan majlis.", "Keberangkatan tiba Kebawah Duli Yang Maha Mulia Seri Paduka Baginda Yang di-Pertuan Agong telah menyerikan majlis.", "Bagi meningkatkan penguasaan sintaksis dalam kalangan pelajar memerlukan latihan berterusan.", "Menurut laporan jawatankuasa penyiasat menyatakan bahawa punca kejadian masih disiasat."],
+                        answer: 1,
+                        explanation: "Pilihan A, C, dan D kesemuanya ayat tergantung tanpa subjek kerana memulakan subjek dengan kata sendi nama ('Dengan', 'Bagi', 'Menurut'). Pilihan B mempunyai subjek FN yang lengkap."
+                    },
+                    {
+                        q: "Dalam ayat 'Buku yang baru dibeli oleh ayah di kedai buku semalam itu sangat tebal', apakah kedudukan kata penentu belakang 'itu'?",
+                        options: ["Hadir di hujung seluruh binaan Frasa Nama subjek untuk menutup kesatuan konstituen subjek", "Hadir sebagai kata penguat bagi kata adjektif 'tebal'", "Hadir secara salah kerana sepatutnya diletakkan selepas kata nama inti 'Buku'", "Hadir sebagai kata ganti nama tunjuk yang menjadi predikat ayat"],
+                        answer: 0,
+                        explanation: "Menurut Tatabahasa Dewan Edisi Keempat, apabila sesuatu Frasa Nama diperluas dengan klausa relatif ('yang baru dibeli... semalam'), kata penentu belakang ('itu' atau 'ini') diletakkan di hujung keseluruhan peluasan FN tersebut."
+                    },
+                    {
+                        q: "Manakah antara ayat berikut yang menunjukkan KESALAHAN peluasan Frasa Kerja dengan unsur keterangan?",
+                        options: ["Kereta api ekspres itu bergerak dengan lajunya menuju ke stesen terakhir.", "Dia menceritakan tentang pengalamannya semasa menuntut di luar negara.", "Ibu menghidangkan sepinggan kuih tradisional untuk tetamu yang hadir.", "Pihak sekolah mengadakan kempen membaca demi memupuk minat murid."],
+                        answer: 1,
+                        explanation: "Kata kerja transitif 'menceritakan' wajib diikuti secara langsung oleh objek frasa nama ('pengalamannya') tanpa disisipkan kata sendi nama 'tentang' di antaranya."
+                    },
+                    {
+                        q: "Pilih pasangan ayat yang mempunyai MAKNA DAN STRUKTUR SINTAKSIS YANG SAMA setelah mengalami proses transformasi pasif.",
+                        options: ["(1) Kakak menghadiahi ibu seutas rantai emas. / (2) Ibu dihadiahi seutas rantai emas oleh kakak.", "(1) Kakak menghadiahkan ibu seutas rantai emas. / (2) Ibu dihadiahkan seutas rantai emas oleh kakak.", "(1) Kakak menghadiahi seutas rantai emas kepada ibu. / (2) Seutas rantai emas dihadiahi oleh kakak kepada ibu.", "(1) Kakak menghadiahkan seutas rantai emas untuk ibu. / (2) Ibu dihadiahkan oleh kakak seutas rantai emas."],
+                        answer: 0,
+                        explanation: "Kata kerja transitif berapitan 'meN-...-i' ('menghadiahi') menerima objek bernyawa ('ibu'), maka apabila dipasifkan, objek tepat 'ibu' berpindah menjadi subjek baharu ('Ibu dihadiahi seutas rantai emas oleh kakak')."
+                    },
+                    {
+                        q: "Teliti ayat: 'Sungguh mengharukan apabila melihat pengorbanan ibu bapa mendidik anak-anak sehingga berjaya.' Apakah punca ketidakgramatisan ayat tersebut?",
+                        options: ["Ketiadaan konstituen subjek yang jelas sebelum predikat Frasa Kerja/Adjektif", "Kata hubung 'apabila' tidak boleh diikuti oleh kata kerja berimbuhan 'meN-'", "Kata penguat 'sungguh' tidak boleh hadir di awal ayat", "Perkataan 'sehingga' ialah kata hubung gabungan yang salah tempat"],
+                        answer: 0,
+                        explanation: "Ayat ini tidak mempunyai subjek yang nyata (ayat tergantung). Pembetulan gramatis: 'Pengorbanan ibu bapa mendidik anak-anak sehingga berjaya sungguh mengharukan' atau 'Kita sungguh terharu apabila melihat...'."
+                    },
+                    {
+                        q: "Berdasarkan Tatabahasa Dewan Edisi Keempat, manakah pernyataan yang PALING TEPAT tentang hubungan antara klausa dengan ayat?",
+                        options: ["Setiap klausa bebas yang diucapkan dengan intonasi yang sempurna dan bermakna lengkap merupakan satu ayat", "Semua klausa tak bebas boleh berdiri sendiri sebagai ayat tunggal sekiranya diletakkan tanda noktah", "Sesuatu ayat majmuk mestilah mengandungi sekurang-kurangnya tiga klausa bebas", "Klausa hanya wujud dalam ayat majmuk dan tidak wujud dalam ayat tunggal"],
+                        answer: 0,
+                        explanation: "Ayat tunggal terdiri daripada satu klausa bebas. Apabila satu klausa bebas diucapkan dengan intonasi lengkap, ia membentuk ayat; sebaliknya klausa tak bebas tidak boleh berdiri sendiri sebagai ayat."
+                    }
+                ]
+            }
+        };
+
+        // =========================================================================
+        // 2B. PANGKALAN DATA NOTA PADAT SINTAKSIS (8 TAJUK UTAMA TATABAHASA DEWAN)
+        // =========================================================================
+        const NOTA_PADAT_TOPICS = [
+            {
+                id: 'nota_1',
+                tag: 'Tajuk 1 • Binaan Frasa',
+                title: 'Binaan Frasa (FN, FK, FA, FS) & Hukum D-M',
+                keywords: 'frasa nama kerja adjektif sendi nama hukum d-m diterangkan menerangkan kekecualian perdana menteri mini telekung',
+                content: `
+                    <p><strong>1. Takrif Frasa:</strong> Unit tatabahasa yang boleh terdiri daripada satu susunan sekurang-kurangnya dua perkataan, atau satu perkataan yang berpotensi diperluas menjadi dua perkataan atau lebih (tiada subjek dan predikat).</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                            <p class="font-bold text-ipg-navy">Rumus Hukum D-M</p>
+                            <p class="mt-1"><strong>D (Diterangkan)</strong> = Unsur inti (hadir di hadapan).<br><strong>M (Menerangkan)</strong> = Unsur penerang (hadir di belakang).<br><em>Contoh Betul:</em> klinik (D) pergigian (M), sos (D) tomato (M), ibu (D) pejabat (M).</p>
+                        </div>
+                        <div class="bg-amber-50/70 p-3 rounded-xl border border-amber-200">
+                            <p class="font-bold text-amber-900">Kekecualian Hukum D-M</p>
+                            <p class="mt-1">Berlaku apabila unsur penerang (M) mendahului kata nama inti (D) bagi <strong>nama jawatan, gelaran, panggilan &amp; istilah khusus</strong>.<br><em>Contoh:</em> Perdana Menteri, Naib Canselor, Timbalan Pengarah, Cikgu Farhana, mini telekung.</p>
+                        </div>
+                    </div>
+                    <p class="mt-2"><strong>2. Binaan Frasa Lain:</strong> <strong>FK Transitif</strong> (wajib diikuti objek FN: <em>menyemak buku</em>) vs <strong>FK Tak Transitif</strong> (berpelengkap: <em>beransur pulih</em>; tanpa pelengkap: <em>bersurai</em>). <strong>FA</strong> menerima kata penguat hadapan (<em>paling, terlalu</em>), belakang (<em>sekali, betul</em>), atau bebas (<em>amat, sangat, sungguh</em>). <strong>FS</strong> wajib dimulakan dengan kata sendi nama (<em>di, ke, dari, daripada, kepada, pada, untuk</em>).</p>
+                `
+            },
+            {
+                id: 'nota_2',
+                tag: 'Tajuk 2 • Klausa',
+                title: 'Klausa Bebas & Klausa Tak Bebas dalam Wacana',
+                keywords: 'klausa bebas utama induk tak bebas terikat pancangan komplemen relatif kohesi koheren',
+                content: `
+                    <p><strong>1. Takrif Klausa:</strong> Rangkaian perkataan yang mengandungi konstituen <strong>subjek dan predikat</strong> serta menjadi konstituen kepada ayat.</p>
+                    <ul class="list-disc pl-5 space-y-1 mt-1.5">
+                        <li><strong>Klausa Bebas (Klausa Utama / Induk):</strong> Boleh berdiri sendiri sebagai ayat lengkap apabila diucapkan dengan intonasi yang sempurna.</li>
+                        <li><strong>Klausa Tak Bebas (Klausa Terikat / Berpancang):</strong> Didahului oleh kata hubung pancangan (<em>bahawa, untuk, yang, kerana, walaupun, sekiranya, apabila</em>) dan <strong>tidak boleh</strong> berdiri sendiri sebagai ayat.</li>
+                        <li><strong>Peranan dalam Wacana:</strong> Gabungan klausa bebas dan klausa tak bebas mewujudkan tautan struktur tatabahasa (<strong>kohesi</strong>) serta pertautan idea sebab-akibat, syarat, atau pertentangan yang logik (<strong>koheren</strong>).</li>
+                    </ul>
+                `
+            },
+            {
+                id: 'nota_3',
+                tag: 'Tajuk 3 • Ayat Dasar & Ayat Tunggal',
+                title: 'Ayat Dasar, 4 Pola Ayat Dasar & Ayat Tunggal',
+                keywords: 'ayat dasar pola fn+fn fn+fk fn+fa fn+fs ayat tunggal susunan biasa',
+                content: `
+                    <p><strong>1. Syarat Mutlak Ayat Dasar:</strong> (i) Ayat tunggal (1 klausa), (ii) Ayat penyata, (iii) Ragam aktif, dan (iv) Susunan biasa (Subjek + Predikat) tanpa unsur penafian atau kata tanya.</p>
+                    <div class="overflow-x-auto mt-2">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-ipg-navy text-white">
+                                    <th class="p-2 rounded-tl-lg">Pola</th>
+                                    <th class="p-2">Subjek</th>
+                                    <th class="p-2 rounded-tr-lg">Predikat (Contoh)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 border border-slate-200">
+                                <tr><td class="p-2 font-bold">Pola 1: FN + FN</td><td class="p-2">Encik Hamzah</td><td class="p-2">pengetua sekolah baharu itu. (Frasa Nama)</td></tr>
+                                <tr><td class="p-2 font-bold">Pola 2: FN + FK</td><td class="p-2">Pelajar-pelajar itu</td><td class="p-2">sedang menelaah pelajaran. (Frasa Kerja)</td></tr>
+                                <tr><td class="p-2 font-bold">Pola 3: FN + FA</td><td class="p-2">Udara di tanah tinggi itu</td><td class="p-2">sungguh nyaman. (Frasa Adjektif)</td></tr>
+                                <tr><td class="p-2 font-bold">Pola 4: FN + FS</td><td class="p-2">Bungkusan hadiah itu</td><td class="p-2">untuk guru pembimbing kami. (Frasa Sendi Nama)</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="mt-2"><strong>2. Perbezaan Ayat Tunggal vs Ayat Dasar:</strong> Semua ayat dasar ialah ayat tunggal, tetapi ayat tunggal juga merangkumi ayat tanya, ayat perintah, ayat seruan, ayat pasif, dan ayat susunan songsang.</p>
+                `
+            },
+            {
+                id: 'nota_4',
+                tag: 'Tajuk 4 • Jenis Ayat',
+                title: 'Empat Jenis Ayat & Dinamika Retorik',
+                keywords: 'jenis ayat penyata tanya tertutup terbuka perintah suruhan larangan silaan permintaan seruan koma tanda seru',
+                content: `
+                    <ul class="list-disc pl-5 space-y-1.5">
+                        <li><strong>Ayat Penyata:</strong> Menyatakan fakta, keterangan, atau berita dengan intonasi menurun.</li>
+                        <li><strong>Ayat Tanya:</strong> Terbahagi kepada <em>Ayat Tanya Tanpa Kata Tanya / Tertutup</em> (jawapan ya/tidak) dan <em>Ayat Tanya Dengan Kata Tanya / Terbuka</em> (apa, siapa, bila, mengapa, bagaimana). Jika kata tanya dikedepankan, wajib disertai partikel <strong>-kah</strong> (<em>Bilakah...</em>).</li>
+                        <li><strong>Ayat Perintah (4 Subjenis):</strong> <em>Suruhan</em> (Jaga kebersihan), <em>Larangan</em> (Jangan / Usah merokok), <em>Silaan</em> (Sila / Jemput masuk), dan <em>Permintaan</em> (Minta / Tolong hantarkan).</li>
+                        <li><strong>Ayat Seruan:</strong> Wajib dimulakan dengan kata seru (<em>Wah, Aduhai, Syabas, Amboi</em>), diikuti tanda <strong>koma (,)</strong>, dan diakhiri tanda <strong>seru (!)</strong> di penghujung ayat.</li>
+                    </ul>
+                `
+            },
+            {
+                id: 'nota_5',
+                tag: 'Tajuk 5 • Susunan Ayat',
+                title: 'Susunan Biasa & Susunan Songsang (Hukum Pendepanan)',
+                keywords: 'susunan songsang pendepanan seluruh predikat sebahagian predikat frasa sendi nama keterangan tidak gramatis',
+                content: `
+                    <p><strong>1. Susunan Biasa:</strong> Subjek mendahului Predikat (S + P).<br><strong>2. Susunan Songsang:</strong> Predikat (seluruh atau sebahagian) dikedepankan mendahului Subjek (P + S).</p>
+                    <div class="bg-rose-50 border border-rose-200 rounded-xl p-3 mt-2 space-y-1">
+                        <p class="font-bold text-rose-900">Peringatan Penting Peperiksaan (Hukum Pendepanan):</p>
+                        <p>• <strong>Pendepanan Seluruh Predikat:</strong> Sentiasa gramatis jika seluruh predikat dipindahkan secara utuh (Contoh: <em>Sungguh lazat sekali juadah itu</em>).</p>
+                        <p>• <strong>Kesalahan Lazim Pendepanan Sebahagian Predikat:</strong> Frasa Sendi Nama keterangan <strong>tidak boleh</strong> didepankan secara bersendirian dengan meninggalkan kata kerja inti di belakang subjek.<br>
+                        <em>Salah:</em> "Di dewan utama para peserta sedang mendengar taklimat."<br>
+                        <em>Betul:</em> "Sedang mendengar taklimat di dewan utama para peserta."</p>
+                    </div>
+                `
+            },
+            {
+                id: 'nota_6',
+                tag: 'Tajuk 6 • Ragam Ayat',
+                title: 'Ragam Ayat Aktif & Jadual Rumus Ayat Pasif (KGND 1, 2, 3)',
+                keywords: 'ragam aktif transitif pasif kgnd pertama kedua ketiga saya kita awak anda mereka di- oleh ter- kena ke-...-an',
+                content: `
+                    <p><strong>1. Ayat Aktif:</strong> Mengutamakan subjek pelaku (<em>Aktif Transitif</em> mempunyai objek dan boleh dipasifkan; <em>Aktif Tak Transitif</em> tidak boleh dipasifkan).</p>
+                    <div class="overflow-x-auto mt-2">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-ipg-navy text-white">
+                                    <th class="p-2 rounded-tl-lg">Jenis Pelaku Pasif</th>
+                                    <th class="p-2">Rumus Wajib (Tatabahasa Dewan)</th>
+                                    <th class="p-2 rounded-tr-lg">Contoh Gramatis</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 border border-slate-200">
+                                <tr>
+                                    <td class="p-2 font-bold">KGND Pertama &amp; Kedua<br><span class="font-normal text-slate-500">(saya, aku, kami, kita, awak, anda, kamu)</span></td>
+                                    <td class="p-2 text-emerald-800 font-semibold">[Kata Bantu + KGND 1/2 + Kata Kerja Dasar]<br><span class="text-rose-600 font-normal">(DILARANG guna <em>di-</em> dan <em>oleh</em>)</span></td>
+                                    <td class="p-2">Laporan itu <strong>masih belum awak hantar</strong>.<br>Program itu <strong>akan kita laksanakan</strong>.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 font-bold">KGND Ketiga<br><span class="font-normal text-slate-500">(dia, beliau, mereka, nama orang/jawatan)</span></td>
+                                    <td class="p-2 text-blue-800 font-semibold">[Kata Bantu + di- + KK + oleh + Pelaku]</td>
+                                    <td class="p-2">Kerja itu <strong>dipantau oleh jurutera</strong>.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 font-bold">Pasif ter- / ke-...-an / kena</td>
+                                    <td class="p-2">Imbuhan <em>ter-</em> wajib ada <em>oleh</em>; <em>ke-...-an</em> menyatakan keadaan; <em>kena</em> + KK dasar.</td>
+                                    <td class="p-2">Batu itu tidak <strong>terangkat oleh</strong> adik.<br>Mereka <strong>kehujanan</strong>. / Pencuri <strong>kena tangkap</strong>.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                `
+            },
+            {
+                id: 'nota_7',
+                tag: 'Tajuk 7 • Ayat Majmuk',
+                title: 'Ayat Majmuk Gabungan, Pancangan & Campuran',
+                keywords: 'ayat majmuk gabungan manakala sambil pancangan relatif yang komplemen bahawa untuk keterangan campuran',
+                content: `
+                    <ul class="list-disc pl-5 space-y-1.5">
+                        <li><strong>Ayat Majmuk Gabungan:</strong> Menggabungkan dua atau lebih klausa setara menggunakan kata hubung gabungan (<em>dan, atau, tetapi, lalu, manakala, serta</em>).<br>
+                        <em>Perhatian:</em> Gunakan <strong>manakala</strong> bagi dua subjek berbeza; gunakan <strong>sambil</strong> bagi satu subjek melakukan dua perbuatan serentak.</li>
+                        <li><strong>Ayat Majmuk Pancangan Relatif:</strong> Menggunakan kata hubung <strong>yang</strong> sahaja untuk menerangkan frasa nama (elakkan bentuk terjemahan <em>"yang mana"</em>).</li>
+                        <li><strong>Ayat Majmuk Pancangan Komplemen:</strong> Menggunakan <strong>bahawa</strong> atau <strong>untuk</strong> sebagai pelengkap subjek atau objek tepat kata kerja transitif.</li>
+                        <li><strong>Ayat Majmuk Pancangan Keterangan:</strong> Klausa tak bebas menerangkan kata kerja utama (<em>Musabab: kerana, oleh sebab; Syarat: sekiranya, jika; Pertentangan: walaupun, meskipun; Waktu: apabila, sewaktu, hingga; Tujuan: demi, agar, supaya</em>).</li>
+                        <li><strong>Ayat Majmuk Campuran:</strong> Mengandungi lebih daripada satu jenis ayat majmuk dalam satu ayat.</li>
+                    </ul>
+                `
+            },
+            {
+                id: 'nota_8',
+                tag: 'Tajuk 8 • Senarai Semak Peperiksaan',
+                title: 'Kesalahan Lazim Sintaksis dalam Peperiksaan BMMB1084',
+                keywords: 'kesalahan sintaksis ayat tergantung lewah demi untuk agar supaya bila apabila oleh kerana',
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1">
+                            <p class="font-bold text-rose-700">1. Kelewahan Kata Hubung</p>
+                            <p>✗ <em>demi untuk</em> &rarr; ✓ <strong>demi</strong> ATAU <strong>untuk</strong><br>
+                            ✗ <em>agar supaya</em> &rarr; ✓ <strong>agar</strong> ATAU <strong>supaya</strong><br>
+                            ✗ <em>kerana sebab</em> &rarr; ✓ <strong>kerana</strong> ATAU <strong>oleh sebab</strong><br>
+                            ✗ <em>Oleh kerana</em> &rarr; ✓ <strong>Oleh sebab</strong></p>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1">
+                            <p class="font-bold text-rose-700">2. Ayat Tergantung &amp; Kata Tanya</p>
+                            <p>✗ Memulakan subjek dengan kata sendi nama (<em>Dalam mesyuarat itu telah meluluskan...</em>) menyebabkan ayat tiada subjek.<br>
+                            ✗ Menggunakan kata tanya <em>bila</em> sebagai kata hubung waktu &rarr; ✓ Tukar kepada <strong>apabila / sewaktu / ketika</strong>.</p>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+
+        // =========================================================================
+        // 3. PENGURUSAN KEADAAN APLIKASI (STATE & LOCALSTORAGE)
+        // =========================================================================
+        let state = {
+            activeTab: 'nota',
+            showGuide: true,
+            notaSearch: '',
+            answers: {},         // { questionId: "teks jawapan" }
+            checked: {},         // { questionId: true/false }
+            scores: {},          // { questionId: number }
+            selectedBand: {},    // { questionId: bandName }
+            selectedBhgB: {
+                modul1: ['m1_b1', 'm1_b2'],
+                modul2: ['m2_b1', 'm2_b2'],
+                modul3: ['m3_b1', 'm3_b2']
+            },
+            mcqAnswers: {
+                mcq1: {},
+                mcq2: {}
+            },
+            mcqSubmitted: {
+                mcq1: false,
+                mcq2: false
+            }
+        };
+
+        // Load from localStorage safely
+        try {
+            const saved = localStorage.getItem('bmmb1084_sintaksis_state_v3');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                state = {
+                    ...state,
+                    ...parsed,
+                    mcqAnswers: { mcq1: {}, mcq2: {} },
+                    mcqSubmitted: { mcq1: false, mcq2: false }
+                };
+            }
+        } catch (e) {
+            console.warn('LocalStorage tidak tersedia:', e);
+        }
+
+        function saveState() {
+            try {
+                localStorage.setItem('bmmb1084_sintaksis_state_v3', JSON.stringify(state));
+            } catch (e) {
+                console.warn('Gagal menyimpan state:', e);
+            }
+        }
+
+        function toggleGuidePanel() {
+            state.showGuide = !state.showGuide;
+            saveState();
+            applyGuideVisibility();
+        }
+
+        function applyGuideVisibility() {
+            const body = document.getElementById('guidePanelBody');
+            const btn = document.getElementById('guideToggleBtn');
+            if (!body || !btn) return;
+            if (state.showGuide) {
+                body.classList.remove('hidden');
+                btn.textContent = 'Sembunyikan Panduan';
+            } else {
+                body.classList.add('hidden');
+                btn.textContent = 'Papar Panduan Penggunaan';
+            }
+        }
+
+        // =========================================================================
+        // 4. PEMASA PEPERIKSAAN & NOTIFIKASI TOAST
+        // =========================================================================
+        let timerSeconds = 7200; // 2 Jam
+        let timerInterval = null;
+
+        function updateTimerDisplay() {
+            const h = String(Math.floor(timerSeconds / 3600)).padStart(2, '0');
+            const m = String(Math.floor((timerSeconds % 3600) / 60)).padStart(2, '0');
+            const s = String(timerSeconds % 60).padStart(2, '0');
+            const el = document.getElementById('timerDisplay');
+            if (el) el.textContent = `${h}:${m}:${s}`;
+        }
+
+        function toggleTimer() {
+            const btn = document.getElementById('timerBtn');
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                btn.textContent = 'Sambung';
+            } else {
+                btn.textContent = 'Jeda';
+                timerInterval = setInterval(() => {
+                    if (timerSeconds > 0) {
+                        timerSeconds--;
+                        updateTimerDisplay();
+                    } else {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                        btn.textContent = 'Tamat';
+                        showToast('Masa peperiksaan 2 jam telah tamat!');
+                    }
+                }, 1000);
+            }
+        }
+
+        function resetTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            timerSeconds = 7200;
+            updateTimerDisplay();
+            const btn = document.getElementById('timerBtn');
+            if (btn) btn.textContent = 'Mula';
+            showToast('Pemasa ditetapkan semula kepada 02:00:00.');
+        }
+
+        let toastTimeout = null;
+        function showToast(msg) {
+            const banner = document.getElementById('toastBanner');
+            const text = document.getElementById('toastMessage');
+            if (!banner || !text) return;
+            text.textContent = msg;
+            banner.classList.remove('hidden');
+            if (toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                banner.classList.add('hidden');
+            }, 3500);
+        }
+        // =========================================================================
+        // 5. PENGURUSAN JAWAPAN, SKEMA & PEMARKAHAN MODUL PEPERIKSAAN
+        // =========================================================================
+        // Kamus sinonim istilah sintaksis bagi pengiraan persamaan (similarity) yang lebih adil
+        const SYNONYM_MAP = {
+            'diterangkan': ['diterangkan', 'unsur inti', 'kata nama inti', 'hukum d-m'],
+            'menerangkan': ['menerangkan', 'penerang', 'unsur penerang'],
+            'kekecualian': ['kekecualian', 'pengecualian', 'dikecualikan', 'menyalahi rumus asal'],
+            'mematuhi': ['mematuhi', 'menepati', 'mengikut', 'betul', 'gramatis'],
+            'klausa bebas': ['klausa bebas', 'klausa utama', 'klausa induk', 'berdiri sendiri'],
+            'pertentangan': ['pertentangan', 'bertentangan', 'kontras', 'walaupun'],
+            'musabab': ['musabab', 'sebab', 'punca', 'alasan', 'kerana', 'oleh sebab'],
+            'syarat': ['syarat', 'prasyarat', 'sekiranya', 'jika'],
+            'kohesi': ['kohesi', 'tautan', 'pertautan gramatis', 'kesinambungan'],
+            'koheren': ['koheren', 'kesepaduan', 'logik', 'makna'],
+            'susunan biasa': ['susunan biasa', 'subjek + predikat', 'subjek mendahului predikat'],
+            'susunan songsang': ['susunan songsang', 'songsang', 'pendepanan', 'dikedepankan'],
+            'tidak gramatis': ['tidak gramatis', 'salah', 'kurang tepat', 'menyalahi', 'janggal'],
+            'gramatis': ['gramatis', 'tepat', 'betul', 'mematuhi rumus'],
+            'pendepanan': ['pendepanan', 'dikedepankan', 'didepankan', 'songsang'],
+            'pembetulan': ['pembetulan', 'sepatutnya', 'yang betul', 'ayat yang gramatis', 'dibetulkan'],
+            'aktif transitif': ['aktif transitif', 'ayat aktif', 'ragam aktif', 'kata kerja transitif'],
+            'pasif': ['pasif', 'ayat pasif', 'ragam pasif', 'dipasifkan'],
+            'kata ganti nama diri pertama': ['kata ganti nama diri pertama', 'kgnd pertama', 'kgnd 1', 'kgnd1'],
+            'kata ganti nama diri kedua': ['kata ganti nama diri kedua', 'kgnd kedua', 'kgnd 2', 'kgnd2'],
+            'kelewahan': ['kelewahan', 'lewah', 'bertindih', 'berulang'],
+            'kata tanya': ['kata tanya', 'soalan', 'interogatif'],
+            'relatif': ['relatif', 'pancangan relatif', 'yang'],
+            'retorik': ['retorik', 'persuasif', 'pemujukan', 'gaya bahasa', 'penegasan'],
+            'mendatar': ['mendatar', 'hambar', 'monotonous', 'bosan', 'statik', 'kurang berkesan']
+        };
+
+        function stripHtmlTags(html) {
+            const tmp = document.createElement('div');
+            tmp.innerHTML = html;
+            return tmp.textContent || tmp.innerText || '';
+        }
+
+        function evaluateAnswerSimilarity(userText, schemeHtml, keywords, maxMarks) {
+            const cleanUser = (userText || '').trim().toLowerCase();
+            if (!cleanUser) {
+                return {
+                    similarityPct: 0,
+                    matchedKeywords: [],
+                    missingKeywords: keywords,
+                    suggestedBand: 'Lemah',
+                    suggestedScore: 0,
+                    feedback: 'Tiada jawapan dikesan. Sila tulis analisis sintaksis anda sebelum menyemak.'
+                };
+            }
+
+            // 1. Semakan Padanan Konsep & Sinonim (65% wajaran)
+            const matchedKeywords = [];
+            const missingKeywords = [];
+            keywords.forEach(kw => {
+                const lowerKw = kw.toLowerCase();
+                const variants = SYNONYM_MAP[lowerKw] || [lowerKw];
+                const isHit = variants.some(v => cleanUser.includes(v));
+                if (isHit) {
+                    matchedKeywords.push(kw);
+                } else {
+                    missingKeywords.push(kw);
+                }
+            });
+            const keywordRatio = keywords.length > 0 ? (matchedKeywords.length / keywords.length) : 0;
+
+            // 2. Semakan Persamaan Leksikal / Perkataan Kandungan dengan Skema (20% wajaran)
+            const stopWords = new Set(['yang', 'dan', 'atau', 'pada', 'dalam', 'untuk', 'dengan', 'oleh', 'itu', 'ini', 'ialah', 'adalah', 'ayat', 'kata', 'frasa', 'di', 'ke', 'dari', 'daripada', 'akan', 'telah', 'sedang', 'sudah', 'masih', 'belum', 'secara', 'bagi', 'sebagai']);
+            const schemeText = stripHtmlTags(schemeHtml).toLowerCase().replace(/[^a-z0-9\s-]/g, ' ');
+            const userWords = new Set(cleanUser.replace(/[^a-z0-9\s-]/g, ' ').split(/\s+/).filter(w => w.length > 3 && !stopWords.has(w)));
+            const schemeWords = Array.from(new Set(schemeText.split(/\s+/).filter(w => w.length > 3 && !stopWords.has(w))));
+
+            let overlapCount = 0;
+            schemeWords.forEach(sw => {
+                if (userWords.has(sw)) overlapCount++;
+            });
+            const lexicalRatio = schemeWords.length > 0 ? Math.min(1, overlapCount / Math.max(6, schemeWords.length * 0.45)) : 0;
+
+            // 3. Kelengkapan & Kedalaman Huraian berdasarkan wajaran markah (15% wajaran)
+            const wordCount = cleanUser.split(/\s+/).filter(Boolean).length;
+            const targetWords = maxMarks >= 20 ? 65 : (maxMarks >= 10 ? 35 : 20);
+            const depthRatio = Math.min(1, wordCount / targetWords);
+
+            // Gabungan Skor Persamaan (Similarity Index)
+            let rawSim = (keywordRatio * 0.65) + (lexicalRatio * 0.20) + (depthRatio * 0.15);
+            // Beri sedikit bonus toleransi jika hampir semua kata kunci teras berjaya dijawab
+            if (keywordRatio >= 0.8 && depthRatio >= 0.6) {
+                rawSim = Math.min(0.98, rawSim + 0.08);
+            }
+            const similarityPct = Math.round(rawSim * 100);
+
+            // Penentuan Band Rubrik IPGM & Anggaran Markah
+            let suggestedBand = 'Lemah';
+            let bandRatio = 0.30;
+            let feedback = 'Huraian masih terlalu ringkas atau terlepas beberapa istilah sintaksis teras. Rujuk kata kunci yang tertinggal di bawah.';
+
+            if (similarityPct >= 82) {
+                suggestedBand = 'Amat Cemerlang';
+                bandRatio = 0.95;
+                feedback = 'Analisis sangat matang, menyeluruh, dan menepati kehendak Tatabahasa Dewan Edisi Keempat berserta bukti yang tepat.';
+            } else if (similarityPct >= 68) {
+                suggestedBand = 'Cemerlang';
+                bandRatio = 0.82;
+                feedback = 'Jawapan kukuh dan menguasai konsep sintaksis utama. Tambah sedikit perincian contoh/pembetulan untuk markah maksimum.';
+            } else if (similarityPct >= 52) {
+                suggestedBand = 'Kepujian';
+                bandRatio = 0.68;
+                feedback = 'Konsep asas berjaya dihuraikan dengan baik, namun terdapat beberapa istilah atau pembuktian khusus yang boleh diperkukuh.';
+            } else if (similarityPct >= 35) {
+                suggestedBand = 'Lulus';
+                bandRatio = 0.54;
+                feedback = 'Jawapan menyentuh idea umum tetapi kurang istilah teknikal sintaksis atau contoh pembetulan yang lengkap.';
+            }
+
+            const suggestedScore = Math.round(maxMarks * bandRatio * 10) / 10;
+
+            return {
+                similarityPct,
+                matchedKeywords,
+                missingKeywords,
+                suggestedBand,
+                suggestedScore,
+                feedback
+            };
+        }
+
+        function updateEssayAnswer(qId, value) {
+            state.answers[qId] = value;
+            saveState();
+            const badgeEl = document.getElementById(`kw-hits-${qId}`);
+            if (badgeEl) {
+                const kws = JSON.parse(decodeURIComponent(badgeEl.dataset.keywords));
+                const lower = value.toLowerCase();
+                let hits = 0;
+                kws.forEach(k => {
+                    const variants = SYNONYM_MAP[k.toLowerCase()] || [k.toLowerCase()];
+                    if (variants.some(v => lower.includes(v))) hits++;
+                });
+                badgeEl.textContent = `${hits} / ${kws.length} Konsep Teras Dikesan`;
+            }
+        }
+
+        function toggleCheckScheme(qId, modId, maxMarks) {
+            const willOpen = !state.checked[qId];
+            state.checked[qId] = willOpen;
+
+            // Jika pelajar membuka semakan dan belum menetapkan markah secara manual, auto-rekod anggaran markah
+            if (willOpen && modId && maxMarks) {
+                const mod = EXAM_MODULES[modId];
+                let targetItem = null;
+                if (mod) {
+                    mod.bahagianA.forEach(q => {
+                        q.subQuestions.forEach(sq => { if (sq.id === qId) targetItem = sq; });
+                    });
+                    mod.bahagianB.forEach(q => {
+                        if (q.id === qId) targetItem = q;
+                    });
+                }
+                if (targetItem) {
+                    const evalRes = evaluateAnswerSimilarity(state.answers[qId] || '', targetItem.scheme, targetItem.keywords, maxMarks);
+                    state.scores[qId] = evalRes.suggestedScore;
+                    state.selectedBand[qId] = evalRes.suggestedBand;
+                    showToast(`Semakan pintar: ${evalRes.similarityPct}% persamaan konsep (${evalRes.suggestedScore}/${maxMarks}m)`);
+                }
+            }
+
+            saveState();
+            renderApp();
+        }
+
+        function selectRubricBand(modId, qId, maxMarks, bandName, ratio) {
+            const calcScore = Math.round(maxMarks * ratio * 10) / 10;
+            state.scores[qId] = calcScore;
+            state.selectedBand[qId] = bandName;
+            saveState();
+            renderApp();
+            showToast(`Markah direkodkan: ${calcScore} / ${maxMarks} (${bandName})`);
+        }
+
+        function toggleBhgBChoice(modId, qId) {
+            let list = state.selectedBhgB[modId] || [];
+            if (list.includes(qId)) {
+                if (list.length > 1) {
+                    list = list.filter(id => id !== qId);
+                } else {
+                    showToast('Anda mesti memilih sekurang-kurangnya 1 soalan di Bahagian B.');
+                    return;
+                }
+            } else {
+                if (list.length >= 2) {
+                    list.shift();
+                }
+                list.push(qId);
+            }
+            state.selectedBhgB[modId] = list;
+            saveState();
+            renderApp();
+        }
+
+        function resetExamModule(modId) {
+            const mod = EXAM_MODULES[modId];
+            if (!mod) return;
+            mod.bahagianA.forEach(q => {
+                q.subQuestions.forEach(sq => {
+                    delete state.answers[sq.id];
+                    delete state.checked[sq.id];
+                    delete state.scores[sq.id];
+                    delete state.selectedBand[sq.id];
+                });
+            });
+            mod.bahagianB.forEach(q => {
+                delete state.answers[q.id];
+                delete state.checked[q.id];
+                delete state.scores[q.id];
+                delete state.selectedBand[q.id];
+            });
+            saveState();
+            renderApp();
+            showToast(`Semua jawapan & markah bagi ${mod.title} telah dikosongkan.`);
+        }
+
+        function calculateModuleScore(modId) {
+            const mod = EXAM_MODULES[modId];
+            let scoreA = 0;
+            mod.bahagianA.forEach(q => {
+                q.subQuestions.forEach(sq => {
+                    scoreA += (state.scores[sq.id] || 0);
+                });
+            });
+            const chosenB = state.selectedBhgB[modId] || [];
+            let scoreB = 0;
+            chosenB.forEach(bId => {
+                scoreB += (state.scores[bId] || 0);
+            });
+            const total = Math.round((scoreA + scoreB) * 10) / 10;
+            return { scoreA, scoreB, total };
+        }
+
+        function renderRubricBands(modId, qId, maxMarks) {
+            const bands = [
+                { name: 'Amat Cemerlang', ratio: 0.95, color: 'emerald' },
+                { name: 'Cemerlang', ratio: 0.82, color: 'blue' },
+                { name: 'Kepujian', ratio: 0.68, color: 'indigo' },
+                { name: 'Lulus', ratio: 0.54, color: 'amber' },
+                { name: 'Lemah', ratio: 0.30, color: 'rose' }
+            ];
+            const activeBand = state.selectedBand[qId];
+
+            return `
+                <div class="mt-4 pt-3 border-t border-slate-200">
+                    <p class="text-xs font-bold text-slate-700 mb-2">Laraskan Markah Rubrik IPGM (Auto-diisi oleh Sistem Semakan Pintar — klik jika mahu ubah):</p>
+                    <div class="flex flex-wrap gap-2">
+                        ${bands.map(b => {
+                            const pts = Math.round(maxMarks * b.ratio * 10) / 10;
+                            const isSelected = activeBand === b.name;
+                            return `
+                                <button
+                                    type="button"
+                                    onclick="selectRubricBand('${modId}', '${qId}', ${maxMarks}, '${b.name}', ${b.ratio})"
+                                    class="px-3 py-1.5 rounded-xl text-xs font-semibold border transition ${
+                                        isSelected
+                                            ? 'bg-ipg-navy text-white border-ipg-navy shadow-sm'
+                                            : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-300'
+                                    }"
+                                >
+                                    ${b.name} (${pts}m)
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderSimilarityBox(evalRes, maxMarks) {
+            const pct = evalRes.similarityPct;
+            let barColor = 'bg-rose-500';
+            let badgeColor = 'bg-rose-100 text-rose-800 border-rose-200';
+            if (pct >= 80) {
+                barColor = 'bg-emerald-600';
+                badgeColor = 'bg-emerald-100 text-emerald-900 border-emerald-300';
+            } else if (pct >= 65) {
+                barColor = 'bg-blue-600';
+                badgeColor = 'bg-blue-100 text-blue-900 border-blue-300';
+            } else if (pct >= 50) {
+                barColor = 'bg-indigo-600';
+                badgeColor = 'bg-indigo-100 text-indigo-900 border-indigo-300';
+            } else if (pct >= 35) {
+                barColor = 'bg-amber-500';
+                badgeColor = 'bg-amber-100 text-amber-900 border-amber-300';
+            }
+
+            return `
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 sm:p-4 space-y-2.5 mb-3">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-lg bg-ipg-navy text-ipg-gold flex items-center justify-center text-xs font-extrabold">AI</span>
+                            <span class="text-xs font-extrabold text-ipg-navy uppercase tracking-wide">Analisis Persamaan Jawapan (Smart Similarity)</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-0.5 rounded-lg border text-xs font-extrabold ${badgeColor}">
+                                Persamaan: ${pct}% • ${evalRes.suggestedBand} (${evalRes.suggestedScore}/${maxMarks}m)
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
+                        <div class="${barColor} h-2 rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+                    </div>
+
+                    <p class="text-xs text-slate-700 leading-relaxed">${evalRes.feedback}</p>
+
+                    <div class="flex flex-wrap items-center gap-1.5 pt-1">
+                        <span class="text-[11px] font-bold text-slate-600 mr-1">Semakan Konsep:</span>
+                        ${evalRes.matchedKeywords.map(kw => `
+                            <span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">✓ ${kw}</span>
+                        `).join('')}
+                        ${evalRes.missingKeywords.map(kw => `
+                            <span class="px-2 py-0.5 rounded-md text-[11px] font-semibold bg-amber-50 text-amber-800 border border-amber-200">+ ${kw}</span>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderExamModule(modId) {
+            const mod = EXAM_MODULES[modId];
+            if (!mod) return '';
+            const { scoreA, scoreB, total } = calculateModuleScore(modId);
+            const pct = Math.round((total / 70) * 100);
+            const chosenB = state.selectedBhgB[modId] || [];
+
+            return `
+                <div class="space-y-6">
+                    <!-- Kertas Soalan Rasmi Header -->
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="bg-ipg-navy text-white px-6 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b-4 border-ipg-gold">
+                            <div>
+                                <div class="flex items-center gap-2 text-xs text-ipg-gold font-bold uppercase tracking-wider">
+                                    <span>KEMENTERIAN PENDIDIKAN • INSTITUT PENDIDIKAN GURU MALAYSIA</span>
+                                </div>
+                                <h2 class="text-lg sm:text-xl font-extrabold mt-1">${mod.title}</h2>
+                                <p class="text-xs text-blue-200 mt-0.5">Kod Kursus: <strong>${mod.code}</strong> | Masa: <strong>${mod.time}</strong> | Jumlah Markah: <strong>${mod.totalMarks} Markah</strong></p>
+                            </div>
+                            <div class="flex items-center gap-3 shrink-0">
+                                <div class="bg-white/10 border border-white/20 px-4 py-2 rounded-xl text-right">
+                                    <p class="text-[11px] uppercase text-blue-200 font-semibold">Markah Semasa</p>
+                                    <p class="text-xl font-extrabold text-ipg-gold">${total} / 70 <span class="text-xs text-white">(${pct}%)</span></p>
+                                </div>
+                                <button onclick="resetExamModule('${modId}')" class="px-3.5 py-2 rounded-xl bg-white/15 hover:bg-white/25 text-xs font-bold text-white transition">
+                                    Set Semula
+                                </button>
+                            </div>
+                        </div>
+                        <div class="bg-slate-50 px-6 py-3 text-xs text-slate-600 flex flex-wrap items-center justify-between gap-2 border-b border-slate-200">
+                            <span><strong>Arahan Calon:</strong> Jawab <strong>semua</strong> soalan dalam Bahagian A (30 markah) dan <strong>dua</strong> soalan dalam Bahagian B (40 markah).</span>
+                            <span class="font-semibold text-ipg-navy">Bhg A: ${scoreA}/30m • Bhg B: ${scoreB}/40m</span>
+                        </div>
+                        <div class="bg-blue-50/70 px-6 py-3 text-xs text-ipg-navy border-b border-blue-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <p><strong>Cara Menjawab &amp; Menyemak:</strong> (1) Taip jawapan anda dalam kotak yang disediakan &rarr; (2) Klik <strong>Semak &amp; Nilai Jawapan</strong> untuk melihat peratusan persamaan konsep (<em>Smart Similarity</em>) dan skema rasmi &rarr; (3) Bagi Bahagian B, pastikan hanya <strong>2 soalan</strong> bertanda <strong>✓ Dipilih</strong> dikira dalam markah akhir.</p>
+                        </div>
+                    </div>
+
+                    <!-- BAHAGIAN A -->
+                    <section class="space-y-4">
+                        <div class="flex items-center justify-between bg-ipg-navy/5 border-l-4 border-ipg-navy px-4 py-2.5 rounded-r-xl">
+                            <h3 class="text-sm sm:text-base font-extrabold text-ipg-navy uppercase tracking-wide">Bahagian A: Soalan Struktur (30 Markah)</h3>
+                            <span class="text-xs font-bold text-ipg-navy bg-white px-2.5 py-1 rounded-lg border border-slate-200">Jawab Semua Soalan</span>
+                        </div>
+
+                        ${mod.bahagianA.map(q => `
+                            <div class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm space-y-5">
+                                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                                    <span class="px-3 py-1 rounded-lg bg-ipg-navy text-white text-xs font-bold">${q.num}</span>
+                                    <span class="text-xs font-bold text-slate-500">Jumlah: ${q.totalMarks} Markah</span>
+                                </div>
+
+                                <!-- Petikan Stimulus -->
+                                <div class="bg-amber-50/60 border-l-4 border-ipg-gold p-4 rounded-r-xl font-serif text-sm sm:text-base text-slate-800 italic leading-relaxed">
+                                    ${q.stimulus}
+                                </div>
+
+                                <!-- Pecahan Soalan (a) dan (b) -->
+                                <div class="space-y-6">
+                                    ${q.subQuestions.map(sq => {
+                                        const ansVal = state.answers[sq.id] || '';
+                                        const isChecked = !!state.checked[sq.id];
+                                        const lower = ansVal.toLowerCase();
+                                        let hits = 0;
+                                        sq.keywords.forEach(k => {
+                                            const variants = SYNONYM_MAP[k.toLowerCase()] || [k.toLowerCase()];
+                                            if (variants.some(v => lower.includes(v))) hits++;
+                                        });
+                                        const evalRes = isChecked ? evaluateAnswerSimilarity(ansVal, sq.scheme, sq.keywords, sq.marks) : null;
+
+                                        return `
+                                            <div class="bg-slate-50/70 rounded-xl p-4 sm:p-5 border border-slate-200/80 space-y-3">
+                                                <div class="flex items-start justify-between gap-3">
+                                                    <p class="text-sm font-semibold text-slate-900 leading-relaxed">
+                                                        <span class="font-extrabold text-ipg-navy mr-1">${sq.label}</span> ${sq.prompt}
+                                                    </p>
+                                                    <span class="shrink-0 px-2.5 py-0.5 rounded-md bg-white border border-slate-200 text-xs font-bold text-ipg-navy">
+                                                        [${sq.marks} markah]
+                                                    </span>
+                                                </div>
+
+                                                <textarea
+                                                    rows="4"
+                                                    oninput="updateEssayAnswer('${sq.id}', this.value)"
+                                                    placeholder="Taip jawapan analisis tatabahasa anda di sini..."
+                                                    class="w-full p-3.5 text-sm bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-ipg-navy focus:border-ipg-navy outline-none transition"
+                                                >${ansVal}</textarea>
+
+                                                <div class="flex flex-wrap items-center justify-between gap-2">
+                                                    <span
+                                                        id="kw-hits-${sq.id}"
+                                                        data-keywords="${encodeURIComponent(JSON.stringify(sq.keywords))}"
+                                                        class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-blue-50 text-ipg-blue border border-blue-200"
+                                                    >
+                                                        ${hits} / ${sq.keywords.length} Konsep Teras Dikesan
+                                                    </span>
+                                                    <button
+                                                        type="button"
+                                                        onclick="toggleCheckScheme('${sq.id}', '${modId}', ${sq.marks})"
+                                                        class="px-4 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                                                            isChecked
+                                                                ? 'bg-slate-200 text-slate-800 hover:bg-slate-300'
+                                                                : 'bg-ipg-navy text-white hover:bg-ipg-blue shadow-sm'
+                                                        }"
+                                                    >
+                                                        ${isChecked ? 'Sembunyikan Semakan & Skema' : 'Semak & Nilai Jawapan'}
+                                                    </button>
+                                                </div>
+
+                                                ${isChecked ? `
+                                                    <div class="mt-3 bg-white rounded-xl p-4 border-2 border-emerald-200 shadow-inner space-y-2 fade-in">
+                                                        ${renderSimilarityBox(evalRes, sq.marks)}
+                                                        <div class="flex items-center justify-between pt-1">
+                                                            <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-700">Skema Pemarkahan (Tatabahasa Dewan Edisi Keempat)</span>
+                                                        </div>
+                                                        <div class="text-xs sm:text-sm text-slate-700 leading-relaxed pt-1">
+                                                            ${sq.scheme}
+                                                        </div>
+                                                        ${renderRubricBands(modId, sq.id, sq.marks)}
+                                                    </div>
+                                                ` : ''}
+                                            </div>
+                                        `;
+                                    }).join('')}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </section>
+
+                    <!-- BAHAGIAN B -->
+                    <section class="space-y-4 pt-2">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-ipg-navy/5 border-l-4 border-ipg-gold px-4 py-2.5 rounded-r-xl">
+                            <h3 class="text-sm sm:text-base font-extrabold text-ipg-navy uppercase tracking-wide">Bahagian B: Soalan Esei (40 Markah)</h3>
+                            <span class="text-xs font-bold text-amber-900 bg-amber-100 px-2.5 py-1 rounded-lg border border-amber-300">Pilih &amp; Jawab DUA (2) Soalan Sahaja</span>
+                        </div>
+
+                        ${mod.bahagianB.map(q => {
+                            const isSelected = chosenB.includes(q.id);
+                            const ansVal = state.answers[q.id] || '';
+                            const isChecked = !!state.checked[q.id];
+                            const lower = ansVal.toLowerCase();
+                            let hits = 0;
+                            q.keywords.forEach(k => {
+                                const variants = SYNONYM_MAP[k.toLowerCase()] || [k.toLowerCase()];
+                                if (variants.some(v => lower.includes(v))) hits++;
+                            });
+                            const evalRes = isChecked ? evaluateAnswerSimilarity(ansVal, q.scheme, q.keywords, q.marks) : null;
+
+                            return `
+                                <div class="bg-white rounded-2xl p-5 sm:p-6 border-2 ${isSelected ? 'border-ipg-navy/40' : 'border-slate-200 opacity-80'} shadow-sm space-y-4 transition">
+                                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                                        <div class="flex items-center gap-2.5">
+                                            <span class="px-3 py-1 rounded-lg bg-ipg-navy text-white text-xs font-bold">${q.num}</span>
+                                            <button
+                                                type="button"
+                                                onclick="toggleBhgBChoice('${modId}', '${q.id}')"
+                                                class="px-3 py-1 rounded-lg text-xs font-bold border transition ${
+                                                    isSelected
+                                                        ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                                                        : 'bg-slate-100 text-slate-600 border-slate-300 hover:bg-slate-200'
+                                                }"
+                                            >
+                                                ${isSelected ? '✓ Dipilih untuk Pemarkahan (20m)' : '+ Pilih Soalan Ini'}
+                                            </button>
+                                        </div>
+                                        <span class="text-xs font-bold text-slate-500">[${q.marks} markah]</span>
+                                    </div>
+
+                                    <div class="bg-amber-50/60 border-l-4 border-ipg-gold p-4 rounded-r-xl font-serif text-sm sm:text-base text-slate-800 italic leading-relaxed">
+                                        ${q.stimulus}
+                                    </div>
+
+                                    <p class="text-sm font-semibold text-slate-900 leading-relaxed">${q.prompt}</p>
+
+                                    <textarea
+                                        rows="6"
+                                        oninput="updateEssayAnswer('${q.id}', this.value)"
+                                        placeholder="Tulis huraian esei sintaksis anda secara terperinci (Pengenalan konsep, analisis setiap ayat, keputusan kegramatisan & cadangan pembetulan)..."
+                                        class="w-full p-3.5 text-sm bg-slate-50/50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-ipg-navy focus:border-ipg-navy focus:bg-white outline-none transition"
+                                    >${ansVal}</textarea>
+
+                                    <div class="flex flex-wrap items-center justify-between gap-2">
+                                        <span
+                                            id="kw-hits-${q.id}"
+                                            data-keywords="${encodeURIComponent(JSON.stringify(q.keywords))}"
+                                            class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-blue-50 text-ipg-blue border border-blue-200"
+                                        >
+                                            ${hits} / ${q.keywords.length} Konsep Teras Dikesan
+                                        </span>
+                                        <button
+                                            type="button"
+                                            onclick="toggleCheckScheme('${q.id}', '${modId}', ${q.marks})"
+                                            class="px-4 py-2 rounded-xl text-xs font-bold transition ${
+                                                isChecked
+                                                    ? 'bg-slate-200 text-slate-800 hover:bg-slate-300'
+                                                    : 'bg-ipg-navy text-white hover:bg-ipg-blue shadow-sm'
+                                            }"
+                                        >
+                                            ${isChecked ? 'Sembunyikan Semakan & Skema' : 'Semak & Nilai Jawapan Esei'}
+                                        </button>
+                                    </div>
+
+                                    ${isChecked ? `
+                                        <div class="mt-3 bg-emerald-50/30 rounded-xl p-4 sm:p-5 border-2 border-emerald-200 space-y-2 fade-in">
+                                            ${renderSimilarityBox(evalRes, q.marks)}
+                                            <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+                                                <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-800">Cadangan Jawapan Esei (Tatabahasa Dewan Edisi Keempat)</span>
+                                            </div>
+                                            <div class="text-xs sm:text-sm text-slate-800 leading-relaxed pt-1">
+                                                ${q.scheme}
+                                            </div>
+                                            ${renderRubricBands(modId, q.id, q.marks)}
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            `;
+                        }).join('')}
+                    </section>
+                </div>
+            `;
+        }
+
+        // =========================================================================
+        // 10. MOD LATIH TUBI OBJEKTIF (2 MODUL × 25 SOALAN SINTAKSIS — SUSUNAN RAWAK)
+        // =========================================================================
+        let mcqOrder = { mcq1: [], mcq2: [] };
+
+        function shuffleArray(arr) {
+            const copy = arr.slice();
+            for (let i = copy.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                const tmp = copy[i];
+                copy[i] = copy[j];
+                copy[j] = tmp;
+            }
+            return copy;
+        }
+
+        function shuffleMcqModule(modKey) {
+            const modData = MCQ_MODULES[modKey];
+            if (!modData) return;
+            const qIndices = shuffleArray(modData.questions.map((_, i) => i));
+            mcqOrder[modKey] = qIndices.map(origQIdx => {
+                const optCount = modData.questions[origQIdx].options.length;
+                const optOrder = shuffleArray(Array.from({ length: optCount }, (_, i) => i));
+                return { origQIdx, optOrder };
+            });
+        }
+
+        function initAllMcqShuffles() {
+            shuffleMcqModule('mcq1');
+            shuffleMcqModule('mcq2');
+        }
+
+        function remapExplanationLetters(text, optOrder) {
+            if (!text || !/pilihan\s+[A-D]/i.test(text)) return text;
+            const letters = ['A', 'B', 'C', 'D'];
+            return text.replace(/(^|[^(-])\b([A-D])\b(?![)-])/g, (_, prefix, letter) => {
+                const origIdx = letters.indexOf(letter);
+                if (origIdx === -1) return prefix + letter;
+                const newIdx = optOrder.indexOf(origIdx);
+                return prefix + (newIdx !== -1 ? letters[newIdx] : letter);
+            });
+        }
+
+        initAllMcqShuffles();
+
+        function selectMcqOption(modKey, origQIdx, origOptIdx) {
+            if (state.mcqSubmitted[modKey]) return;
+            if (!state.mcqAnswers[modKey]) state.mcqAnswers[modKey] = {};
+            state.mcqAnswers[modKey][origQIdx] = origOptIdx;
+            saveState();
+            renderApp();
+        }
+
+        function submitMcqQuiz(modKey) {
+            state.mcqSubmitted[modKey] = true;
+            saveState();
+            renderApp();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            const label = modKey === 'mcq1' ? 'Objektif 1 (Asas)' : 'Objektif 2 (Mencabar KBAT)';
+            showToast(`Kuiz ${label} telah disemak!`);
+        }
+
+        function resetMcqQuiz(modKey) {
+            state.mcqAnswers[modKey] = {};
+            state.mcqSubmitted[modKey] = false;
+            shuffleMcqModule(modKey);
+            saveState();
+            renderApp();
+            const label = modKey === 'mcq1' ? 'Objektif 1' : 'Objektif 2';
+            showToast(`Latih tubi ${label} telah ditetapkan semula dengan susunan soalan & jawapan baharu.`);
+        }
+
+        function renderMcqMode(modKey) {
+            const modData = MCQ_MODULES[modKey];
+            const questionsList = modData.questions;
+            if (!mcqOrder[modKey] || mcqOrder[modKey].length !== questionsList.length) {
+                shuffleMcqModule(modKey);
+            }
+            const orderList = mcqOrder[modKey];
+            const currentAnswers = state.mcqAnswers[modKey] || {};
+            const isSubmitted = !!state.mcqSubmitted[modKey];
+
+            let correctCount = 0;
+            const answeredCount = Object.keys(currentAnswers).length;
+            questionsList.forEach((item, origQIdx) => {
+                if (currentAnswers[origQIdx] === item.answer) correctCount++;
+            });
+            const pct = Math.round((correctCount / questionsList.length) * 100);
+
+            return `
+                <div class="space-y-6">
+                    <!-- Header Banner -->
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="bg-ipg-navy text-white px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-4 border-ipg-gold">
+                            <div>
+                                <span class="px-2.5 py-0.5 rounded border text-[11px] font-bold uppercase ${modData.badgeStyle}">${modData.badge}</span>
+                                <h2 class="text-lg sm:text-xl font-extrabold mt-1">${modData.title}</h2>
+                                <p class="text-xs text-blue-200 mt-0.5">${modData.subtitle}</p>
+                            </div>
+                            <div class="flex items-center gap-3 shrink-0">
+                                ${isSubmitted ? `
+                                    <div class="bg-white/10 border border-white/20 px-4 py-2 rounded-xl text-right">
+                                        <p class="text-[11px] uppercase text-blue-200 font-semibold">Markah Anda</p>
+                                        <p class="text-xl font-extrabold text-ipg-gold">${correctCount} / 25 <span class="text-xs text-white">(${pct}%)</span></p>
+                                    </div>
+                                ` : `
+                                    <div class="bg-white/10 border border-white/20 px-4 py-2 rounded-xl text-right">
+                                        <p class="text-[11px] uppercase text-blue-200 font-semibold">Dijawab</p>
+                                        <p class="text-lg font-extrabold text-white">${answeredCount} / 25</p>
+                                    </div>
+                                `}
+                                <button onclick="resetMcqQuiz('${modKey}')" class="px-3.5 py-2 rounded-xl bg-white/15 hover:bg-white/25 text-xs font-bold text-white transition">
+                                    Set Semula
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Questions List -->
+                    <div class="space-y-4">
+                        ${orderList.map((entry, displayIdx) => {
+                            const item = questionsList[entry.origQIdx];
+                            const userChoice = currentAnswers[entry.origQIdx];
+                            const isCorrect = userChoice === item.answer;
+                            const letters = ['A', 'B', 'C', 'D'];
+                            const correctDisplayIdx = entry.optOrder.indexOf(item.answer);
+                            const mappedExp = remapExplanationLetters(item.explanation, entry.optOrder);
+
+                            return `
+                                <div class="bg-white rounded-2xl p-5 sm:p-6 border ${
+                                    isSubmitted
+                                        ? (isCorrect ? 'border-emerald-300 bg-emerald-50/20' : 'border-rose-300 bg-rose-50/20')
+                                        : 'border-slate-200'
+                                } shadow-sm space-y-3.5">
+                                    <div class="flex items-start gap-3">
+                                        <span class="w-7 h-7 rounded-lg ${modKey === 'mcq2' ? 'bg-amber-600' : 'bg-ipg-navy'} text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                                            ${displayIdx + 1}
+                                        </span>
+                                        <p class="text-sm sm:text-base font-semibold text-slate-900 leading-relaxed">${item.q}</p>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 gap-2 pl-0 sm:pl-10">
+                                        ${entry.optOrder.map((origOptIdx, displayOptIdx) => {
+                                            const opt = item.options[origOptIdx];
+                                            let btnStyle = 'bg-slate-50 hover:bg-blue-50/70 border-slate-200 text-slate-800';
+                                            let badgeStyle = 'bg-white border-slate-300 text-slate-700';
+
+                                            if (!isSubmitted && userChoice === origOptIdx) {
+                                                btnStyle = 'bg-ipg-navy text-white border-ipg-navy shadow-sm';
+                                                badgeStyle = 'bg-ipg-gold text-ipg-dark border-ipg-gold';
+                                            } else if (isSubmitted) {
+                                                if (origOptIdx === item.answer) {
+                                                    btnStyle = 'bg-emerald-100 border-emerald-400 text-emerald-950 font-semibold';
+                                                    badgeStyle = 'bg-emerald-600 text-white border-emerald-600';
+                                                } else if (userChoice === origOptIdx && userChoice !== item.answer) {
+                                                    btnStyle = 'bg-rose-100 border-rose-400 text-rose-950';
+                                                    badgeStyle = 'bg-rose-600 text-white border-rose-600';
+                                                } else {
+                                                    btnStyle = 'bg-slate-50 border-slate-200 text-slate-500 opacity-75';
+                                                }
+                                            }
+
+                                            return `
+                                                <button
+                                                    type="button"
+                                                    onclick="selectMcqOption('${modKey}', ${entry.origQIdx}, ${origOptIdx})"
+                                                    class="w-full text-left p-3 rounded-xl border transition flex items-center gap-3 text-xs sm:text-sm ${btnStyle}"
+                                                >
+                                                    <span class="w-6 h-6 rounded-md border flex items-center justify-center text-xs font-bold shrink-0 ${badgeStyle}">
+                                                        ${letters[displayOptIdx]}
+                                                    </span>
+                                                    <span class="leading-snug">${opt}</span>
+                                                </button>
+                                            `;
+                                        }).join('')}
+                                    </div>
+
+                                    ${isSubmitted ? `
+                                        <div class="sm:ml-10 p-3.5 rounded-xl text-xs leading-relaxed ${
+                                            isCorrect ? 'bg-emerald-100/80 text-emerald-900 border border-emerald-200' : 'bg-amber-50 text-amber-950 border border-amber-200'
+                                        }">
+                                            <strong>${isCorrect ? '✓ Tepat!' : `✗ Kurang Tepat (Jawapan: ${letters[correctDisplayIdx]})`}</strong> — ${mappedExp}
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+
+                    <!-- Submit Bar -->
+                    ${!isSubmitted ? `
+                        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <p class="text-xs sm:text-sm text-slate-600">Anda telah menjawab <strong>${answeredCount} daripada 25</strong> soalan objektif.</p>
+                            <button
+                                onclick="submitMcqQuiz('${modKey}')"
+                                class="w-full sm:w-auto px-6 py-3 rounded-xl bg-ipg-navy hover:bg-ipg-blue text-white font-bold text-sm shadow-md transition"
+                            >
+                                Semak Semua Jawapan Objektif
+                            </button>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        // =========================================================================
+        // 10B. PAPARAN TAB NOTA PADAT SINTAKSIS (CARIAN PANTAS + 8 TAJUK)
+        // =========================================================================
+        function updateNotaSearch(val) {
+            state.notaSearch = val;
+            renderApp();
+            const inp = document.getElementById('notaSearchInput');
+            if (inp) {
+                inp.focus();
+                inp.setSelectionRange(val.length, val.length);
+            }
+        }
+
+        function renderNotaMode() {
+            const query = (state.notaSearch || '').trim().toLowerCase();
+            const filtered = NOTA_PADAT_TOPICS.filter(t => {
+                if (!query) return true;
+                return (
+                    t.title.toLowerCase().includes(query) ||
+                    t.tag.toLowerCase().includes(query) ||
+                    t.keywords.toLowerCase().includes(query) ||
+                    stripHtmlTags(t.content).toLowerCase().includes(query)
+                );
+            });
+
+            return `
+                <div class="space-y-6">
+                    <!-- Header Banner & Carian Pantas -->
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="bg-ipg-navy text-white px-6 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b-4 border-ipg-gold">
+                            <div>
+                                <span class="px-2.5 py-0.5 rounded bg-sky-500/20 text-sky-200 border border-sky-400/30 text-[11px] font-bold uppercase">Rujukan Teras • Tatabahasa Dewan Edisi Keempat</span>
+                                <h2 class="text-lg sm:text-xl font-extrabold mt-1">Nota Padat &amp; Rumus Asas Sintaksis (8 Tajuk Utama)</h2>
+                                <p class="text-xs text-blue-200 mt-0.5">Kuasai rumus penting sebelum mencuba Latih Tubi Objektif dan Modul Simulasi Peperiksaan</p>
+                            </div>
+                            <div class="w-full md:w-80 shrink-0">
+                                <div class="relative">
+                                    <input
+                                        id="notaSearchInput"
+                                        type="text"
+                                        value="${state.notaSearch || ''}"
+                                        oninput="updateNotaSearch(this.value)"
+                                        placeholder="Cari istilah (cth: Hukum D-M, KGND, songsang)..."
+                                        class="w-full pl-9 pr-8 py-2 rounded-xl bg-white/15 border border-white/25 text-xs sm:text-sm text-white placeholder-blue-200 focus:bg-white focus:text-slate-900 focus:placeholder-slate-400 outline-none transition"
+                                    />
+                                    <svg class="w-4 h-4 text-ipg-gold absolute left-3 top-2.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                    </svg>
+                                    ${query ? `
+                                        <button onclick="updateNotaSearch('')" class="absolute right-2.5 top-2 text-xs font-bold text-slate-400 hover:text-rose-600">✕</button>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Senarai Kad Nota -->
+                    ${filtered.length === 0 ? `
+                        <div class="bg-white rounded-2xl p-8 border border-slate-200 text-center space-y-2">
+                            <p class="text-sm font-bold text-slate-700">Tiada tajuk nota yang sepadan dengan carian "<em>${state.notaSearch}</em>".</p>
+                            <button onclick="updateNotaSearch('')" class="px-4 py-1.5 rounded-xl bg-ipg-navy text-white text-xs font-bold">Papar Semua 8 Tajuk</button>
+                        </div>
+                    ` : `
+                        <div class="grid grid-cols-1 gap-4">
+                            ${filtered.map(topic => `
+                                <article class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm space-y-3">
+                                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
+                                        <div>
+                                            <span class="text-[11px] font-extrabold uppercase tracking-wider text-sky-700 bg-sky-50 px-2.5 py-0.5 rounded-md border border-sky-200">${topic.tag}</span>
+                                            <h3 class="text-base sm:text-lg font-extrabold text-ipg-navy mt-1.5">${topic.title}</h3>
+                                        </div>
+                                    </div>
+                                    <div class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                                        ${topic.content}
+                                    </div>
+                                </article>
+                            `).join('')}
+                        </div>
+                    `}
+
+                    <!-- Butang Navigasi Pantas ke Latih Tubi -->
+                    <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <p class="text-xs sm:text-sm text-slate-600">Sudah bersedia menguji kefahaman anda selepas membaca nota padat?</p>
+                        <div class="flex flex-wrap gap-2 w-full sm:w-auto">
+                            <button onclick="switchTab('mcq1')" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm transition">
+                                Mula Objektif 1 (Asas) &rarr;
+                            </button>
+                            <button onclick="switchTab('modul1')" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-ipg-navy hover:bg-ipg-blue text-white font-bold text-xs shadow-sm transition">
+                                Terus ke Modul Simulasi 1 &rarr;
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // =========================================================================
+        // 11. PENGEMUDIAN TAB & PERMULAAN APLIKASI
+        // =========================================================================
+        function switchTab(tabId) {
+            state.activeTab = tabId;
+            if ((tabId === 'mcq1' || tabId === 'mcq2') &&
+                Object.keys(state.mcqAnswers[tabId] || {}).length === 0 &&
+                !state.mcqSubmitted[tabId]) {
+                shuffleMcqModule(tabId);
+            }
+            saveState();
+            renderApp();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderApp() {
+            // Kemas kini gaya tab aktif
+            document.querySelectorAll('.nav-tab').forEach(btn => {
+                if (btn.id === `tab-${state.activeTab}`) {
+                    btn.className = 'nav-tab shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-ipg-gold text-ipg-dark shadow-sm transition flex items-center gap-2';
+                } else {
+                    btn.className = 'nav-tab shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-blue-100 hover:bg-white/10 transition flex items-center gap-2';
+                }
+            });
+
+            const container = document.getElementById('appContainer');
+            if (state.activeTab === 'nota') {
+                container.innerHTML = renderNotaMode();
+            } else if (state.activeTab === 'mcq1' || state.activeTab === 'mcq2') {
+                container.innerHTML = renderMcqMode(state.activeTab);
+            } else {
+                container.innerHTML = renderExamModule(state.activeTab);
+            }
+        }
+
+        // Jalankan paparan awal
+        window.onload = function() {
+            applyGuideVisibility();
+            renderApp();
+        };
+    </script>
+</body>
+</html>
